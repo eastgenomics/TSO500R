@@ -79,13 +79,15 @@ get_small_variants <- function(cvo_obj, ...){
 #' @method get_small_variants combined.variant.output
 #' @export
 get_small_variants.combined.variant.output <- function(cvo_obj){
-  if(is.na(cvo_obj$small_variants)){
-    small_variant_df <- data.frame()
-  } else {
-    small_variant_df <- cvo_obj$small_variants %>%
-      dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
-      dplyr::select(sample_id, tidyr::everything())
-  }
+  suppressWarnings(
+    if(is.na(cvo_obj$small_variants)){
+      small_variant_df <- data.frame()
+    } else {
+      small_variant_df <- cvo_obj$small_variants %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+    }
+  )
   return(small_variant_df)
 }
 
@@ -157,7 +159,7 @@ handle_empty_table_values <- function(intermediate_tbl){
 #'
 #' @return char vector
 trim_header_and_footer <- function(string){
-  s %>%
+  string %>%
     stringr::str_remove(".+\\t\\t\\n") %>%
     stringr::str_remove("[\\n\\t]+$")
 }
