@@ -16,24 +16,30 @@ process_small_variant_data(small_variant_df)
 Processes small-variant data to comply with requirements for
 further analysis. The function:
 
-    1. filters for variants that:
-      - have a consequence in a pre-defined list (see details)
-      - are present with depth > 0
-    2. extracts NP ID and protein information from the P Dot-notation column
-    3. adds columns to faciliate addition of reference data
+\enumerate{
+  \item filters for variants that:
+    \itemize{
+      \item have a consequence in a pre-defined list (see details)
+      \item are present with depth > 0
+    }
+  \item extracts NP ID and protein information from the P Dot-notation column
+  \item adds columns to faciliate addition of annotation data
+}
 }
 \details{
 The following variant consequences are currently included:
-- frameshift_variant
-- inframe_deletion
-- inframe_insertion
-- missense_variant
-- missense_variant:splice_region_variant
-- splice_acceptor_variant
-- splice_donor_variant
-- splice_donor_variant:intron_variant
-- start_lost
-- stop_gained
-- stop_gained:splice_region_variant
-- stop_lost
+\itemize{
+ \item frameshift_variant
+ \item inframe_deletion
+ \item inframe_insertion
+ \item missense_variant
+ \item missense_variant:splice_region_variant
+ \item splice_acceptor_variant
+ \item splice_donor_variant
+ \item splice_donor_variant:intron_variant
+ \item start_lost
+ \item stop_gained
+ \item stop_gained:splice_region_variant
+ \item stop_lost
+}
 }

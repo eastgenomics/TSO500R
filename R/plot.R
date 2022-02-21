@@ -27,7 +27,7 @@ plot_af_per_variant_consequence <- function(small_variant_df){
 plot_af_histogram <- function(small_variant_df){
   g <- ggplot(small_variant_df, aes(x = allele_frequency, group = sample_id,
                                     colour = sample_id, fill = sample_id)) +
-    geom_density(alpha=0.3) +
+    geom_histogram(alpha=0.3, binwidth = 0.025) +
     facet_wrap(~sample_id, ncol = 4) +
     theme(
       panel.grid.major = element_line(color = "grey",

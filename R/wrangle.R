@@ -20,25 +20,31 @@ read_small_variants <- function(cvo_list){
 #' @description Processes small-variant data to comply with requirements for
 #' further analysis. The function:
 #'
-#'     1. filters for variants that:
-#'       - have a consequence in a pre-defined list (see details)
-#'       - are present with depth > 0
-#'     2. extracts NP ID and protein information from the P Dot-notation column
-#'     3. adds columns to faciliate addition of reference data
+#' \enumerate{
+#'   \item filters for variants that:
+#'     \itemize{
+#'       \item have a consequence in a pre-defined list (see details)
+#'       \item are present with depth > 0
+#'     }
+#'   \item extracts NP ID and protein information from the P Dot-notation column
+#'   \item adds columns to faciliate addition of annotation data
+#' }
 #'
 #' @details The following variant consequences are currently included:
-#' - frameshift_variant
-#' - inframe_deletion
-#' - inframe_insertion
-#' - missense_variant
-#' - missense_variant:splice_region_variant
-#' - splice_acceptor_variant
-#' - splice_donor_variant
-#' - splice_donor_variant:intron_variant
-#' - start_lost
-#' - stop_gained
-#' - stop_gained:splice_region_variant
-#' - stop_lost
+#' \itemize{
+#'  \item frameshift_variant
+#'  \item inframe_deletion
+#'  \item inframe_insertion
+#'  \item missense_variant
+#'  \item missense_variant:splice_region_variant
+#'  \item splice_acceptor_variant
+#'  \item splice_donor_variant
+#'  \item splice_donor_variant:intron_variant
+#'  \item start_lost
+#'  \item stop_gained
+#'  \item stop_gained:splice_region_variant
+#'  \item stop_lost
+#' }
 #'
 #' @param small_variant_df Data-frame of small variants
 #' @return
@@ -57,7 +63,7 @@ process_small_variant_data <- function(small_variant_df){
     filter_consequences(variant_consequences) %>%
     filter_depth(depth_limit = 0) %>%
     parse_p_dot_notation() %>%
-    update_ref_join_columns()
+    update_annotation_join_columns()
 
   return(updated_df)
 }
@@ -103,12 +109,12 @@ parse_p_dot_notation <- function(small_variant_df){
   )
 }
 
-#' Helper function to make small variant DF joinable to reference data
+#' Helper function to make small variant DF joinable to annotation data
 #'
 #' @param small_variant_df
 #'
 #' @return data frame
-update_ref_join_columns <- function(small_variant_df){
+update_annotation_join_columns <- function(small_variant_df){
   mutated_df <- small_variant_df %>%
     dplyr::mutate(
       protein = paste(gene, protein, sep = "_"),
@@ -117,16 +123,16 @@ update_ref_join_columns <- function(small_variant_df){
   return(mutated_df)
 }
 
-#' Adds GEL reference data to small variant data
+#' Adds GEL annotation data to small variant data
 #'
 #' @param small_variant_df
-#' @param reference_data_list
+#' @param annotation_data_list
 #'
 #' @return
 #' @export
-add_reference_data <- function(small_variant_df, reference_data_list){
+add_annotation_data <- function(small_variant_df, annotation_data_list){
   key_order = c("protein", "coord_id", "gene", "gene", "gene", "gene", "gene")
-  to_join <- c(list(small_variant_df), reference_data_list)
+  to_join <- c(list(small_variant_df), annotation_data_list)
   joined_data <- purrr::reduce2(.x = to_join, .y = key_order, .f = left_join)
   return(joined_data)
 }

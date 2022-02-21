@@ -18,7 +18,7 @@ write_workbook <- function(workbook_name, data_frames, sheet_names){
     .f = function(x, y, z) write_worksheet(x, y, z, workbook)
   )
   openxlsx::saveWorkbook(wb = workbook,
-                         file = paste0(workbook_name, Sys.Date(), ".xlsx"), overwrite = TRUE)
+                         file = paste0(workbook_name, "_", Sys.Date(), ".xlsx"), overwrite = TRUE)
 }
 
 #' Write worksheet to Excel workbook.
