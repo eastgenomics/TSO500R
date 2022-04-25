@@ -51,13 +51,14 @@ read_small_variants <- function(cvo_list){
 #' @export
 process_small_variant_data <- function(small_variant_df){
 
-  variant_consequences <- c("frameshift_variant", "inframe_deletion",
-                            "inframe_insertion", "missense_variant",
-                            "missense_variant:splice_region_variant",
-                            "splice_acceptor_variant", "splice_donor_variant",
-                            "splice_donor_variant:intron_variant", "start_lost",
-                            "stop_gained", "stop_gained:splice_region_variant",
-                            "stop_lost")
+  variant_consequences <- c("3_prime_UTR_variant",
+                            "5_prime_UTR_variant",
+                            "downstream_gene_variant",
+                            "intron_variant",
+                            "splice_region_variant:intron_variant",
+                            "splice_region_variant:synonymous_variant",
+                            "synonymous_variant",
+                            "upstream_gene_variant")
 
   updated_df <- small_variant_df %>%
     filter_consequences(variant_consequences) %>%
@@ -68,7 +69,8 @@ process_small_variant_data <- function(small_variant_df){
   return(updated_df)
 }
 
-#' Filters small variant data for specified variant consequences
+#' Filters small variant data for variant consequences. Removes
+#' any variant with a consequence matching the list of submitted consequences
 #'
 #' @param small_variant_df
 #' @param consequences
@@ -76,7 +78,8 @@ process_small_variant_data <- function(small_variant_df){
 #' @return data.frame
 #' @export
 filter_consequences <- function(small_variant_df, consequences){
-  filtered_df <- small_variant_df %>% dplyr::filter(consequence_s %in% consequences)
+  filtered_df <- small_variant_df %>%
+    dplyr::filter(!(consequence_s %in% consequences | is.na(consequence_s) | consequence_s == ""))
   return(filtered_df)
 }
 
