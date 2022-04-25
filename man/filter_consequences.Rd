@@ -2,7 +2,8 @@
 % Please edit documentation in R/wrangle.R
 \name{filter_consequences}
 \alias{filter_consequences}
-\title{Filters small variant data for specified variant consequences}
+\title{Filters small variant data for variant consequences. Removes
+any variant with a consequence matching the list of submitted consequences}
 \usage{
 filter_consequences(small_variant_df, consequences)
 }
@@ -13,5 +14,6 @@ filter_consequences(small_variant_df, consequences)
 data.frame
 }
 \description{
-Filters small variant data for specified variant consequences
+Filters small variant data for variant consequences. Removes
+any variant with a consequence matching the list of submitted consequences
 }
