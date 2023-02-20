@@ -48,7 +48,7 @@ This will produce a data frame with TMB/MSI metrics, per sample.
 You can also extract all of the small variant data across all of the objects. The following function will return a `data.frame` of small variants:
 
 ```r
-small_variant_df <- read_small_variants(cvo_data) %>%
+small_variant_df <- read_small_variants(cvo_data)
 ```
 
 #### Filtering/processing
@@ -113,8 +113,6 @@ plot_af_per_variant_consequence(small_variant_df) %>%
   add_common_theme_elements()
 ```
 
-
-
 ref_data_filepath <- "test_data/TSO_Reference.xlsx"
 flowcell_barcode <- str_extract(cvo_data_dir, "AH.+XY")
 
@@ -142,6 +140,6 @@ write_workbook("test", data_frames = data_to_write, sheet_names = names(data_to_
 
 ### Processing
 
-Alternativel
+Alternative
 
 ### Reference data
