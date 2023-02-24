@@ -15,6 +15,57 @@ read_small_variants <- function(cvo_list){
   return(small_variants)
 }
 
+#' Read in a list of combined.variant.output objects
+#' and return a data frame of gene amplifications per sample
+#'
+#' @param cvo_list a list of combined.variant.output objects
+#'
+#' @return A data frame of gene amplifications extracted from
+#' each combined.variant.output object, per sample
+#'
+#' @export
+read_gene_amplifications <- function(cvo_list){
+
+  gene_amplifications <- purrr::map(cvo_list, get_gene_amplifications) %>%
+    dplyr::bind_rows()
+
+  return(gene_amplifications)
+}
+
+#' Read in a list of combined.variant.output objects
+#' and return a data frame of fusions per sample
+#'
+#' @param cvo_list a list of combined.variant.output objects
+#'
+#' @return A data frame of fusions extracted from
+#' each combined.variant.output object, per sample
+#'
+#' @export
+read_fusions <- function(cvo_list){
+
+  fusions <- purrr::map(cvo_list, get_fusions) %>%
+    dplyr::bind_rows()
+
+  return(fusions)
+}
+
+#' Read in a list of combined.variant.output objects
+#' and return a data frame of splice variants per sample
+#'
+#' @param cvo_list a list of combined.variant.output objects
+#'
+#' @return A data frame of splice variants extracted from
+#' each combined.variant.output object, per sample
+#'
+#' @export
+read_splice_variants <- function(cvo_list){
+
+  splice_variants <- purrr::map(cvo_list, get_splice_variants) %>%
+    dplyr::bind_rows()
+
+  return(splice_variants)
+}
+
 #' Process and filter small variant data-frame to requirements
 #'
 #' @description Processes small-variant data to comply with requirements for
