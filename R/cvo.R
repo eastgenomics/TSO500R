@@ -80,13 +80,13 @@ get_small_variants <- function(cvo_obj, ...){
 #' @export
 get_small_variants.combined.variant.output <- function(cvo_obj){
   suppressWarnings(
-    if(is.na(cvo_obj$small_variants)){
+    if(all(is.na(cvo_obj$small_variants))){
       small_variant_df <- data.frame()
     } else {
       small_variant_df <- cvo_obj$small_variants %>%
         dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
         dplyr::select(sample_id, tidyr::everything())
-    }
+  }
   )
   return(small_variant_df)
 }
@@ -147,7 +147,7 @@ handle_empty_table_values <- function(intermediate_tbl){
   if(stringr::str_detect(string = intermediate_tbl, pattern = "\\nNA$")){
     return(NA)
   } else {
-    to_clean <- utils::read.table(text = intermediate_tbl, sep = "\t", header = TRUE)
+    to_clean <- utils::read.table(text = intermediate_tbl, sep = "\t", header = TRUE, fill = TRUE)
     clean_name_df <- janitor::clean_names(to_clean)
     return(clean_name_df)
   }
