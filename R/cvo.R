@@ -72,6 +72,39 @@ get_small_variants <- function(cvo_obj, ...){
   UseMethod("get_small_variants", cvo_obj)
 }
 
+#' Extract gene amplifications from combined.variant.output object and
+#' return in data frame format
+#'
+#' @param cvo_obj cvo_obj
+#'
+#' @return A data frame of gene amplifications
+#' @export
+get_gene_amplifications <- function(cvo_obj, ...){
+  UseMethod("get_gene_amplifications", cvo_obj)
+}
+
+#' Extract splice variants from combined.variant.output object and
+#' return in data frame format
+#'
+#' @param cvo_obj cvo_obj
+#'
+#' @return A data frame of splice variants
+#' @export
+get_splice_variants <- function(cvo_obj, ...){
+  UseMethod("get_splice_variants", cvo_obj)
+}
+
+#' Extract fusions from combined.variant.output object and
+#' return in data frame format
+#'
+#' @param cvo_obj cvo_obj
+#'
+#' @return A data frame of fusions
+#' @export
+get_fusions <- function(cvo_obj, ...){
+  UseMethod("get_fusions", cvo_obj)
+}
+
 #' Get small variants from combined.variant.output object
 #'
 #' @param cvo_obj cvo_obj
@@ -80,15 +113,72 @@ get_small_variants <- function(cvo_obj, ...){
 #' @export
 get_small_variants.combined.variant.output <- function(cvo_obj){
   suppressWarnings(
-    if(is.na(cvo_obj$small_variants)){
+    if(all(is.na(cvo_obj$small_variants))){
       small_variant_df <- data.frame()
     } else {
       small_variant_df <- cvo_obj$small_variants %>%
         dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
         dplyr::select(sample_id, tidyr::everything())
-    }
+  }
   )
   return(small_variant_df)
+}
+
+#' Get gene amplifications from combined.variant.output object
+#'
+#' @param cvo_obj cvo_obj
+#' @return A data frame
+#' @method get_gene_amplifications combined.variant.output
+#' @export
+get_gene_amplifications.combined.variant.output <- function(cvo_obj){
+  suppressWarnings(
+    if(all(is.na(cvo_obj$gene_amplifications))){
+      gene_amplification_df <- data.frame()
+    } else {
+      gene_amplification_df <- cvo_obj$gene_amplifications %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+  }
+  )
+  return(gene_amplification_df)
+}
+
+#' Get splice variants from combined.variant.output object
+#'
+#' @param cvo_obj cvo_obj
+#' @return A data frame
+#' @method get_splice_variants combined.variant.output
+#' @export
+get_splice_variants.combined.variant.output <- function(cvo_obj){
+  suppressWarnings(
+    if(all(is.na(cvo_obj$splice_variants))){
+      splice_variant_df <- data.frame()
+    } else {
+      splice_variant_df <- cvo_obj$splice_variants %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+  }
+  )
+  return(splice_variant_df)
+}
+
+#' Get fusions from combined.variant.output object
+#'
+#' @param cvo_obj cvo_obj
+#' @return A data frame
+#' @method get_fusions combined.variant.output
+#' @export
+get_fusions.combined.variant.output <- function(cvo_obj){
+  suppressWarnings(
+    if(all(is.na(cvo_obj$fusions))){
+      fusion_df <- data.frame()
+    } else {
+      fusion_df <- cvo_obj$fusions %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+  }
+  )
+  return(fusion_df)
 }
 
 #' Helper function to parse key-value lines in CombinedVariantOutput.tsv
@@ -147,7 +237,7 @@ handle_empty_table_values <- function(intermediate_tbl){
   if(stringr::str_detect(string = intermediate_tbl, pattern = "\\nNA$")){
     return(NA)
   } else {
-    to_clean <- utils::read.table(text = intermediate_tbl, sep = "\t", header = TRUE)
+    to_clean <- utils::read.table(text = intermediate_tbl, sep = "\t", header = TRUE, fill = TRUE)
     clean_name_df <- janitor::clean_names(to_clean)
     return(clean_name_df)
   }
