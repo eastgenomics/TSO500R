@@ -15,7 +15,7 @@ read_small_variants <- function(cvo_list){
   return(small_variants)
 }
 
-#' Process small variant data-frame to requirements
+#' Process and filter small variant data-frame to requirements
 #'
 #' @description Processes small-variant data to comply with requirements for
 #' further analysis. The function:
@@ -49,7 +49,7 @@ read_small_variants <- function(cvo_list){
 #' @param small_variant_df Data-frame of small variants
 #' @return
 #' @export
-process_small_variant_data <- function(small_variant_df){
+process_and_filter_small_variant_data <- function(small_variant_df){
 
   variant_consequences <- c("3_prime_UTR_variant",
                             "5_prime_UTR_variant",
