@@ -146,6 +146,50 @@ filter_depth <- function(small_variant_df, depth_limit = 0){
   return(filtered_df)
 }
 
+#' Helper function to filter small variant data according
+#' to the GermlineFilterDatabase filter
+#'
+#' @param small_variant_df
+#'
+#' @return
+filter_germline_db <- function(small_variant_df){
+  filtered_df <- dplyr::filter(small_variant_df, !GermlineFilterDatabase)
+  return(filtered_df)
+}
+
+#' Helper function to filter small variant data according
+#' to the GermlineFilterProxi filter
+#'
+#' @param small_variant_df
+#'
+#' @return
+filter_germline_proxi <- function(small_variant_df){
+  filtered_df <- dplyr::filter(small_variant_df, !GermlineFilterProxi)
+  return(filtered_df)
+}
+
+#' Helper function to filter small variant data and keep
+#' only variants with annotated COSMIC ID(s)
+#'
+#' @param small_variant_df
+#'
+#' @return
+filter_for_cosmic_id <- function(small_variant_df){
+  filtered_df <- dplyr::filter(small_variant_df, !is.na(CosmicIDs))
+  return(filtered_df)
+}
+
+#' Helper function to filter small variant data and keep
+#' only variants that are included in TMB numerator
+#'
+#' @param small_variant_df
+#'
+#' @return
+filter_for_Included_in_TMB <- function(small_variant_df){
+  filtered_df <- dplyr::filter(small_variant_df, IncludedInTMBNumerator)
+  return(filtered_df)
+}
+
 #' Parses P-Dot notation column, splitting it into distinct NP ID and
 #' amino acid variant columns
 #'
@@ -188,6 +232,19 @@ add_annotation_data <- function(small_variant_df, annotation_data_list){
   key_order = c("protein", "coord_id", "gene", "gene", "gene", "gene", "gene")
   to_join <- c(list(small_variant_df), annotation_data_list)
   joined_data <- purrr::reduce2(.x = to_join, .y = key_order, .f = left_join)
+  return(joined_data)
+}
+
+#' Adds information from TMB trace table to small variant data
+#'
+#' @param small_variant_df
+#' @param tmb_variant_df
+#'
+#' @return
+#' @export
+add_tmb_variant_data <- function(small_variant_df, tmb_variant_df){
+  joined_data <- small_variant_df %>% 
+    left_join(tmb_variant_df, by = c("sample_id", "chromosome" = "Chromosome", "genomic_position" = "Position", "reference_call" = "RefCall", "alternative_call" = "AltCall"))
   return(joined_data)
 }
 
