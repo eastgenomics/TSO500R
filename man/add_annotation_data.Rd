@@ -9,9 +9,6 @@ add_annotation_data(small_variant_df, annotation_data_list)
 \arguments{
 \item{annotation_data_list}{}
 }
-\value{
-
-}
 \description{
 Adds GEL annotation data to small variant data
 }

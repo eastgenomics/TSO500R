@@ -9,9 +9,6 @@ write_worksheet(data, sheet_name, sheet_index, workbook)
 \arguments{
 \item{workbook}{}
 }
-\value{
-
-}
 \description{
 Write worksheet to Excel workbook.
 }

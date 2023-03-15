@@ -10,9 +10,6 @@ filter_germline_db(small_variant_df)
 \arguments{
 \item{small_variant_df}{}
 }
-\value{
-
-}
 \description{
 Helper function to filter small variant data according
 to the GermlineFilterDatabase filter
