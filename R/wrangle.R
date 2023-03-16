@@ -120,17 +120,34 @@ process_and_filter_small_variant_data <- function(small_variant_df){
   return(updated_df)
 }
 
-#' Filters small variant data for variant consequences. Removes
-#' any variant with a consequence matching the list of submitted consequences
+#' Filters variant data for variant consequences. Removes
+#' any variant with a consequence matching the list of submitted consequences 
+#' or an empty consequence field
 #'
-#' @param small_variant_df
-#' @param consequences
+#' @param variant_df Data frame with variant data
+#' @param consequences List of consequences to filter out
+#' @param type_column Name of column with variant types (default: consequence_s)
 #'
 #' @return data.frame
 #' @export
-filter_consequences <- function(small_variant_df, consequences){
-  filtered_df <- small_variant_df %>%
-    dplyr::filter(!(consequence_s %in% consequences | is.na(consequence_s) | consequence_s == ""))
+filter_consequences <- function(variant_df, consequences, type_column="consequence_s"){
+  filtered_df <- variant_df %>%
+    dplyr::filter(!(get(type_column) %in% consequences | is.na(get(type_column)) | get(type_column) == ""))
+  return(filtered_df)
+}
+
+#' Filters for variant data for variant consequences. Keeps
+#' any variant with a consequence matching the list of submitted consequences 
+#'
+#' @param variant_df Data frame witgh variant data
+#' @param consequences List of consequences to keep
+#' @param type_column Name of column with variant types (default: consequence_s)
+#'
+#' @return data.frame
+#' @export
+keep_consequences <- function(variant_df, consequences, type_column="consequence_s"){
+  filtered_df <- variant_df %>%
+    dplyr::filter(get(type_column) %in% consequences )
   return(filtered_df)
 }
 
@@ -248,6 +265,25 @@ add_tmb_variant_data <- function(small_variant_df, tmb_variant_df){
   return(joined_data)
 }
 
+#' Adds amplifications to small variant data, 
+#' variant type (consequence_s) column renamed to variant_type
+#'
+#' @param small_variant_df
+#' @param tmb_variant_df
+#'
+#' @return
+#' @export
+add_amplification_data <- function(small_variant_df, amplification_df){
+  prepared_amplification_df <- amplification_df %>% 
+    dplyr::mutate(variant_type = if_else(fold_change < 1.0, "DEL", "DUP")) %>% 
+    dplyr::select(-fold_change)
+
+  joined_data <- small_variant_df %>% 
+    rename(variant_type = consequence_s) %>%
+    bind_rows(prepared_amplification_df)
+  return(joined_data)
+}
+
 #' Helper function to extract TMB/MSI metrics from
 #' list of combined.variant.output objects
 #'
@@ -274,4 +310,124 @@ get_metrics_df <- function(cvo_data){
     dplyr::mutate(sample_id = purrr::map_chr(cvo_data, ~ .x$analysis_details$pair_id)) %>%
     dplyr::select(sample_id, tidyr::everything())
   return(metrics_df)
+}
+
+#' Extracts all analysis details from list of combined.variant.output
+#' objects, returning a data frame of analysis details per sample
+#'
+#' @param cvo_data
+#'
+#' @return data.frame
+#' @export
+get_analysis_details_df <- function(cvo_data){
+  analysis_details <- extract_metrics(cvo_data, category = "analysis_details")
+  analysis_details_df <- analysis_details %>%
+    dplyr::mutate(sample_id = purrr::map_chr(cvo_data, ~ .x$analysis_details$pair_id)) %>%
+    dplyr::select(sample_id, tidyr::everything())
+  return(analysis_details_df)
+}
+
+#' Extracts all sequencing run details from list of combined.variant.output
+#' objects, returning a data frame of sequencing run details per sample
+#'
+#' @param cvo_data
+#'
+#' @return data.frame
+#' @export
+get_sequencing_run_details_df <- function(cvo_data){
+  sequencing_run_details <- extract_metrics(cvo_data, category = "sequencing_run_details")
+  sequencing_run_details_df <- sequencing_run_details %>%
+    dplyr::mutate(sample_id = purrr::map_chr(cvo_data, ~ .x$analysis_details$pair_id)) %>%
+    dplyr::select(sample_id, tidyr::everything())
+  return(sequencing_run_details_df)
+}
+
+#' Helper function to extract summarized counts based on sample_id
+#'
+#' @param data_df
+#' @param column_name
+#'
+#' @return data.frame
+get_summarised_statistics_df <- function(data_df, column_name){
+  if (!(nrow(data_df) == 0)) {
+    summarized_data_df <- data_df %>% 
+      group_by(sample_id) %>% 
+      summarise({{column_name}} := n()) %>% 
+      select(sample_id, {{column_name}})
+  }
+  else {
+    summarized_data_df <- data_df %>% 
+      tibble::add_column(sample_id = "") %>% 
+      tibble::add_column({{column_name}} := "")
+  }
+  return(summarized_data_df)
+}
+
+#' Extracts the counts of the different variant types from list of combined.variant.output
+#' objects, returning a data frame of counts per sample
+#'
+#' @param cvo_data
+#' @param category
+#'
+#' @return data.frame
+#' @export
+get_count_df <- function(cvo_data){
+  # most of the following steps are taken to make sure that we get numbers for all samples and 
+  # variant types
+  default_df <- extract_metrics(cvo_data, category = "sequencing_run_details") %>%
+    dplyr::mutate(sample_id = purrr::map_chr(cvo_data, ~ .x$analysis_details$pair_id)) %>%
+    dplyr::select(sample_id) %>%
+    tibble::add_column(number_of_amplifications = NA) %>%
+    tibble::add_column(number_of_small_variants = NA) %>%
+    tibble::add_column(number_of_fusions = NA) %>%
+    tibble::add_column(number_of_splice_variants = NA)
+
+  amps <- read_gene_amplifications(cvo_data) %>%
+    get_summarised_statistics_df("number_of_amplifications")
+  small_variants <- read_small_variants(cvo_data) %>%
+    get_summarised_statistics_df("number_of_small_variants")
+  fusions <- read_fusions(cvo_data) %>%
+    get_summarised_statistics_df("number_of_fusions")
+  splice_variants <- read_splice_variants(cvo_data) %>%
+    get_summarised_statistics_df("number_of_splice_variants")
+
+  counts_df <- default_df %>% 
+    full_join(amps, by = 'sample_id') %>%
+    mutate(number_of_amplifications=coalesce(number_of_amplifications.x, number_of_amplifications.y)) %>%
+    full_join(small_variants, by = 'sample_id') %>%
+    mutate(number_of_small_variants=coalesce(number_of_small_variants.x,number_of_small_variants.y)) %>%
+    full_join(fusions, by = 'sample_id') %>%
+    mutate(number_of_fusions=coalesce(number_of_fusions.x,number_of_fusions.y)) %>%
+    full_join(splice_variants, by = 'sample_id') %>%
+    mutate(number_of_splice_variants=coalesce(number_of_splice_variants.x,number_of_splice_variants.y)) %>% 
+    select(sample_id, number_of_amplifications, number_of_small_variants, number_of_fusions, number_of_splice_variants) %>%
+    mutate(number_of_amplifications = ifelse(is.na(number_of_amplifications), 0, number_of_amplifications), 
+      number_of_fusions = ifelse(is.na(number_of_fusions), 0, number_of_fusions),
+      number_of_small_variants = ifelse(is.na(number_of_small_variants), 0, number_of_small_variants),
+      number_of_splice_variants = ifelse(is.na(number_of_splice_variants), 0, number_of_splice_variants))
+
+  return(counts_df)
+}
+
+#' Transforms data frame holding variant information to a matrix that can be used as OncoPrint input
+#'
+#' @param variant_data_frame Data frame holding variant information
+#' @param id_column Column holding identifiers
+#' @param gene_column Column holding genes
+#' @param variant_type_column Column holding variant types
+#'
+#' @return data.frame
+#' @export
+prepare_dataframe_for_oncoprint <- function(variant_data_frame, id_column="sample_id", gene_column="gene", variant_type_column="consequence_s"){
+  oncoprint_df <- variant_data_frame %>%
+    pivot_wider(id_cols = id_column, names_from = gene_column, values_from = variant_type_column, values_fn = function(x) paste(x, collapse=";"))
+
+    oncoprint_matrix <- as.matrix(oncoprint_df)
+    oncoprint_matrix[is.na(oncoprint_matrix)] = ''
+    rownames(oncoprint_matrix) = oncoprint_matrix[, 1]
+    oncoprint_matrix = oncoprint_matrix[, -1]
+    oncoprint_matrix=  oncoprint_matrix[, -ncol(oncoprint_matrix)]
+    oncoprint_matrix = t(as.matrix(oncoprint_matrix))
+
+    return(oncoprint_matrix)
 }

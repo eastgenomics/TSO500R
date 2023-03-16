@@ -2,18 +2,24 @@
 % Please edit documentation in R/wrangle.R
 \name{filter_consequences}
 \alias{filter_consequences}
-\title{Filters small variant data for variant consequences. Removes
-any variant with a consequence matching the list of submitted consequences}
+\title{Filters variant data for variant consequences. Removes
+any variant with a consequence matching the list of submitted consequences 
+or an empty consequence field}
 \usage{
-filter_consequences(small_variant_df, consequences)
+filter_consequences(variant_df, consequences, type_column = "consequence_s")
 }
 \arguments{
-\item{consequences}{}
+\item{variant_df}{Data frame with variant data}
+
+\item{consequences}{List of consequences to filter out}
+
+\item{type_column}{Name of column with variant types (default: consequence_s)}
 }
 \value{
 data.frame
 }
 \description{
-Filters small variant data for variant consequences. Removes
-any variant with a consequence matching the list of submitted consequences
+Filters variant data for variant consequences. Removes
+any variant with a consequence matching the list of submitted consequences 
+or an empty consequence field
 }

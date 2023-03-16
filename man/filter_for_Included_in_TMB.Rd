@@ -10,9 +10,6 @@ filter_for_Included_in_TMB(small_variant_df)
 \arguments{
 \item{small_variant_df}{}
 }
-\value{
-
-}
 \description{
 Helper function to filter small variant data and keep
 only variants that are included in TMB numerator

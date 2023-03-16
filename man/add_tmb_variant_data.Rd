@@ -9,9 +9,6 @@ add_tmb_variant_data(small_variant_df, tmb_variant_df)
 \arguments{
 \item{tmb_variant_df}{}
 }
-\value{
-
-}
 \description{
 Adds information from TMB trace table to small variant data
 }

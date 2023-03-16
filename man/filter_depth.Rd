@@ -10,9 +10,6 @@ filter_depth(small_variant_df, depth_limit = 0)
 \arguments{
 \item{depth_limit}{}
 }
-\value{
-
-}
 \description{
 Helper function to filter small variant data according
 to specified depth

@@ -10,9 +10,6 @@ parse_p_dot_notation(small_variant_df)
 \arguments{
 \item{small_variant_df}{}
 }
-\value{
-
-}
 \description{
 Parses P-Dot notation column, splitting it into distinct NP ID and
 amino acid variant columns
