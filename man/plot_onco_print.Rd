@@ -10,6 +10,10 @@ plot_onco_print(
   alter_list,
   variant_colors,
   heatmap_legend,
+  bottom_annotation = anno_empty(border = FALSE),
+  top_annotation = anno_empty(border = FALSE),
+  right_annotation = anno_empty(border = FALSE),
+  left_annotation = anno_empty(border = FALSE),
   top = nrow(variant_matrix)
 )
 }

@@ -12,7 +12,13 @@ prepare_dataframe_for_oncoprint(
 )
 }
 \arguments{
-\item{variant_data_frame}{the data frame holding variant information}
+\item{variant_data_frame}{Data frame holding variant information}
+
+\item{id_column}{Column holding identifiers}
+
+\item{gene_column}{Column holding genes}
+
+\item{variant_type_column}{Column holding variant types}
 }
 \value{
 data.frame
