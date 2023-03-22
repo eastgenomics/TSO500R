@@ -66,6 +66,159 @@ read_splice_variants <- function(cvo_list){
   return(splice_variants)
 }
 
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of run qc metrics per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of small variants extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_run_qc_metrics <- function(qmo_list){
+
+  run_qc_metrics <- purrr::map(qmo_list, get_run_qc_metrics) %>%
+    dplyr::bind_rows()
+
+  return(run_qc_metrics)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of the analysis status per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of analysis status extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_analysis_status <- function(qmo_list){
+
+  analysis_status <- purrr::map(qmo_list, get_analysis_status) %>%
+    dplyr::bind_rows()
+
+  return(analysis_status)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of dna qc metrics per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of dna qc metrics extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_dna_qc_metrics <- function(qmo_list){
+
+  dna_qc_metrics <- purrr::map(qmo_list, get_dna_qc_metrics) %>%
+    dplyr::bind_rows()
+
+  return(dna_qc_metrics)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of dna qc metrics (small variants/tmb) per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of dna qc metrics (small variants/tmb) extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_dna_qc_metrics_snvtmb <- function(qmo_list){
+
+  dna_qc_metrics_snvtmb <- purrr::map(qmo_list, get_dna_qc_metrics_snvtmb) %>%
+    dplyr::bind_rows()
+
+  return(dna_qc_metrics_snvtmb)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of dna qc metrics (msi) per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of dna qc metrics (msi) extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_dna_qc_metrics_msi <- function(qmo_list){
+
+  dna_qc_metrics_msi <- purrr::map(qmo_list, get_dna_qc_metrics_msi) %>%
+    dplyr::bind_rows()
+
+  return(dna_qc_metrics_msi)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of dna qc metrics (cnv) per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of dna qc metrics (cnv) extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_dna_qc_metrics_cnv <- function(qmo_list){
+
+  dna_qc_metrics_cnv <- purrr::map(qmo_list, get_dna_qc_metrics_cnv) %>%
+    dplyr::bind_rows()
+
+  return(dna_qc_metrics_cnv)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of expanded dna qc metrics per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of expanded dna qc metrics extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_dna_expanded_metrics <- function(qmo_list){
+
+  dna_expanded_metrics <- purrr::map(qmo_list, get_dna_expanded_metrics) %>%
+    dplyr::bind_rows()
+
+  return(dna_expanded_metrics)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of rna qc metrics per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of rna qc metrics extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_rna_qc_metrics <- function(qmo_list){
+
+  rna_qc_metrics <- purrr::map(qmo_list, get_rna_qc_metrics) %>%
+    dplyr::bind_rows()
+
+  return(rna_qc_metrics)
+}
+
+#' Read in a list of combined.quality.metrics.output objects
+#' and return a data frame of expanded rna qc metrics per timepoint
+#'
+#' @param cvo_list a list of combined.quality.metrics.output objects
+#'
+#' @return A data frame of expanded rna qc metrics extracted from
+#' each combined.quality.metrics.output object, per timepoint
+#'
+#' @export
+read_rna_expanded_metrics <- function(qmo_list){
+
+  rna_expanded_metrics <- purrr::map(qmo_list, get_rna_expanded_metrics) %>%
+    dplyr::bind_rows()
+
+  return(rna_expanded_metrics)
+}
+
 #' Process and filter small variant data-frame to requirements
 #'
 #' @description Processes small-variant data to comply with requirements for
