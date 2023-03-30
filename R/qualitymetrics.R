@@ -398,5 +398,6 @@ handle_empty_table_values <- function(intermediate_tbl){
 trim_header_and_footer <- function(string){
   string %>%
     stringr::str_remove(".+\\t\\t\\n") %>%
+    stringr::str_remove_all("[\\t]{2,}") %>%
     stringr::str_remove("[\\n\\t]+$")
 }
