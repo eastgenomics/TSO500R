@@ -69,7 +69,8 @@ plot_af_density <- function(small_variant_df){
 #' @return ggplot object
 #' @export
 #' @TODO figure out how to add (bottom/top annotations optionally)
-plot_onco_print <- function(variant_matrix, column_title, alter_list, variant_colors, heatmap_legend, top=nrow(variant_matrix)){
+#' @TODO add possibility to change order of data
+plot_onco_print <- function(variant_matrix, column_title, alter_list, variant_colors, heatmap_legend, bottom_annotation=anno_empty(border = FALSE), top_annotation=anno_empty(border = FALSE), right_annotation=anno_empty(border = FALSE), left_annotation=anno_empty(border = FALSE), top=nrow(variant_matrix)){
   # get top {top} genes
   top_index = order(apply(variant_matrix, 1, function(x) sum(x != "")), decreasing = TRUE)[1:top]
   variant_matrix_top <- variant_matrix[top_index, ]
@@ -81,7 +82,13 @@ plot_onco_print <- function(variant_matrix, column_title, alter_list, variant_co
           show_row_names = TRUE,
           show_pct = TRUE,
           remove_empty_rows = TRUE,
-          heatmap_legend_param = heatmap_legend_param
+          heatmap_legend_param = heatmap_legend_param,
+
+          top_annotation = HeatmapAnnotation(ta = top_annotation, 
+            cbar = anno_oncoprint_barplot(height = unit(4, "cm")), show_annotation_name = FALSE),
+          bottom_annotation = HeatmapAnnotation(ba = bottom_annotation, show_annotation_name = FALSE),
+          right_annotation = rowAnnotation(ra = right_annotation, show_annotation_name = FALSE),
+          left_annotation = rowAnnotation(la = left_annotation, show_annotation_name = FALSE)
         )
   return(onco_print)
 }

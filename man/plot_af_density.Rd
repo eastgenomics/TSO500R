@@ -7,7 +7,7 @@
 plot_af_density(small_variant_df)
 }
 \arguments{
-\item{small_variant_df}{Data-frame containing small variants}
+\item{small_variant_df}{Data frame containing small variants}
 }
 \value{
 ggplot object
