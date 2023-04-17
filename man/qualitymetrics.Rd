@@ -4,10 +4,12 @@
 \alias{qualitymetrics}
 \title{Read in a MetricsOutput.tsv file and store as an object}
 \usage{
-qualitymetrics(metrics_file_path)
+qualitymetrics(metrics_file_path, local_app = FALSE)
 }
 \arguments{
 \item{metrics_file_path}{a file path to a MetricsOutput.tsv file}
+
+\item{local_app}{specifies whether quality metrics are coming from local app}
 }
 \value{
 A quality.metrics.output object
