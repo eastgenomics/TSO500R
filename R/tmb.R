@@ -60,3 +60,30 @@ read_tmb_details_data <- function(tmb_directory){
 
   tmb_data
 }
+
+#' Read in a batch of *tmb.metrics.csv files into a list
+#'
+#' @param tmb_directory a file path to a directory containing one of more
+#' *tmb.metrics.csv files
+#'
+#' @return A named list of data frame objects
+#' @export
+read_tmb_details_data_csv <- function(tmb_directory){
+  tmb_files <- list.files(
+    path = tmb_directory,
+    pattern = "*tmb.metrics.csv",
+    full.names = TRUE
+  )
+
+  tmb_data <- tibble(file = tmb_files) %>%
+    mutate(data = lapply(tmb_files, read.table, header=FALSE, sep=",")) %>%
+    unnest_longer(data) %>%
+    unnest(data) %>%
+    select(-c(V1,V2)) %>%
+    pivot_wider(names_from=V3, values_from=V4) %>%
+    mutate(sample_id = str_replace(basename(file), ".tmb.metrics.csv", "")) %>%
+    select(-file) %>%
+    relocate(sample_id)
+
+  tmb_data
+}
