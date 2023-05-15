@@ -25,12 +25,12 @@ new_combined_variant_output <- function(cvo_file_path) {
 
   # handle the parts of the file that are structured as key-value pairs
   # i.e. metadata and TMB/MSI sections
-  records <- purrr::map(split_cvo_string[2:5], parse_record)
+  records <- purrr::map(split_cvo_string[2:5], parse_cvo_record)
   names(records) <- c("analysis_details", "sequencing_run_details", "tmb", "msi")
 
   # handle the parts of the file that are structured as tabular data
   # i.e. gene amplifications, splice variants, fusions, and small variants
-  tables <- purrr::map(split_cvo_string[6:9], parse_table)
+  tables <- purrr::map(split_cvo_string[6:9], parse_cvo_table)
   names(tables) <- c("gene_amplifications", "splice_variants", "fusions", "small_variants")
 
   return(structure(c(records, tables), class = "combined.variant.output"))
@@ -186,10 +186,10 @@ get_fusions.combined.variant.output <- function(cvo_obj){
 #' @param record_string
 #'
 #' @return char vector
-parse_record <- function(record_string){
+parse_cvo_record <- function(record_string){
 
   intermediate <- record_string %>%
-    trim_header_and_footer() %>%
+    trim_cvo_header_and_footer() %>%
     stringr::str_split("\n") %>%
     unlist() %>%
     stringr::str_remove("\\t$") %>%
@@ -211,9 +211,9 @@ parse_record <- function(record_string){
 #' @param table_string
 #'
 #' @return data.frame
-parse_table <- function(table_string){
+parse_cvo_table <- function(table_string){
 
-  intermediate <- table_string %>% trim_header_and_footer()
+  intermediate <- table_string %>% trim_cvo_header_and_footer()
   header_line <- stringr::str_extract(intermediate, ".+\n")
 
   if(stringr::str_detect(header_line, "\\t\\n")){
@@ -223,7 +223,7 @@ parse_table <- function(table_string){
       replacement = "\n")
   }
 
-  table_data <- intermediate %>% handle_empty_table_values()
+  table_data <- intermediate %>% handle_empty_cvo_table_values()
   return(table_data)
 }
 
@@ -233,7 +233,7 @@ parse_table <- function(table_string){
 #' @param intermediate_tbl
 #'
 #' @return data.frame
-handle_empty_table_values <- function(intermediate_tbl){
+handle_empty_cvo_table_values <- function(intermediate_tbl){
   if(stringr::str_detect(string = intermediate_tbl, pattern = "\\nNA$")){
     return(NA)
   } else {
@@ -248,7 +248,7 @@ handle_empty_table_values <- function(intermediate_tbl){
 #' @param string
 #'
 #' @return char vector
-trim_header_and_footer <- function(string){
+trim_cvo_header_and_footer <- function(string){
   string %>%
     stringr::str_remove(".+\\t\\t\\n") %>%
     stringr::str_remove("[\\n\\t]+$")
