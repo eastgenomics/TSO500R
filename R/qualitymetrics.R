@@ -27,12 +27,12 @@ new_combined_quality_metrics_output <- function(metrics_file_path, local_app=FAL
 
   # handle the parts of the file that are structured as key-value pairs
   # i.e. header and notes sections
-  records <- purrr::map(split_qmo_string[c(2,12)], parse_record)
+  records <- purrr::map(split_qmo_string[c(2,12)], parse_qmo_record)
   names(records) <- c("header", "notes")
 
   # handle the parts of the file that are structured as tabular data
   # i.e. run qc metrics, analysis status etc. 
-  tables <- purrr::map(split_qmo_string[3:11], parse_table)
+  tables <- purrr::map(split_qmo_string[3:11], parse_qmo_table)
 
   # the order of tables is different between local app and DRAGEN analysis pipeline
   names(tables) <- c("run_qc_metrics", "analysis_status", "dna_qc_metrics", "dna_qc_metrics_snvtmb", "dna_qc_metrics_msi", "dna_qc_metrics_cnv", "rna_qc_metrics", "dna_expanded_metrics", "rna_expanded_metrics")
@@ -182,6 +182,7 @@ get_run_qc_metrics.combined.quality.metrics.output <- function(qmo_obj){
     } else {
       run_qc_metrics_df <- qmo_obj$run_qc_metrics %>% 
         select(metric_uom, lsl_guideline, usl_guideline, value)
+
     }
   )
   return(run_qc_metrics_df)
@@ -348,10 +349,10 @@ get_rna_expanded_metrics.combined.quality.metrics.output <- function(qmo_obj){
 #' @param record_string
 #'
 #' @return char vector
-parse_record <- function(record_string){
+parse_qmo_record <- function(record_string){
 
   intermediate <- record_string %>%
-    trim_header_and_footer() %>%
+    trim_qmo_header_and_footer() %>%
     stringr::str_split("\n") %>%
     unlist() %>%
     stringr::str_remove("\\t$") %>%
@@ -368,10 +369,10 @@ parse_record <- function(record_string){
 #' @param table_string
 #'
 #' @return data.frame
-parse_table <- function(table_string){
+parse_qmo_table <- function(table_string){
 
   intermediate <- table_string %>% 
-    trim_header_and_footer()
+    trim_qmo_header_and_footer()
   header_line <- stringr::str_extract(intermediate, ".+\n")
 
   if(stringr::str_detect(header_line, "\\t\\n")){
@@ -381,7 +382,7 @@ parse_table <- function(table_string){
       replacement = "\n")
   }
 
-  table_data <- intermediate %>% handle_empty_table_values()
+  table_data <- intermediate %>% handle_empty_qmo_table_values()
   return(table_data)
 }
 
@@ -390,7 +391,7 @@ parse_table <- function(table_string){
 #' @param intermediate_tbl
 #'
 #' @return data.frame
-handle_empty_table_values <- function(intermediate_tbl){
+handle_empty_qmo_table_values <- function(intermediate_tbl){
   if(stringr::str_detect(string = intermediate_tbl, pattern = "\\nNA$")){
     return(NA)
   } else {
@@ -405,7 +406,7 @@ handle_empty_table_values <- function(intermediate_tbl){
 #' @param string
 #'
 #' @return char vector
-trim_header_and_footer <- function(string){
+trim_qmo_header_and_footer <- function(string){
   string %>%
     stringr::str_remove(".+\\t\\t\\n") %>%
     stringr::str_remove_all("[\\t]{2,}") %>%
