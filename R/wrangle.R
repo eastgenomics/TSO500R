@@ -579,7 +579,6 @@ prepare_dataframe_for_oncoprint <- function(variant_data_frame, id_column="sampl
     oncoprint_matrix[is.na(oncoprint_matrix)] = ''
     rownames(oncoprint_matrix) = oncoprint_matrix[, 1]
     oncoprint_matrix = oncoprint_matrix[, -1]
-    oncoprint_matrix=  oncoprint_matrix[, -ncol(oncoprint_matrix)]
     oncoprint_matrix = t(as.matrix(oncoprint_matrix))
 
     return(oncoprint_matrix)
