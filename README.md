@@ -113,6 +113,8 @@ plot_af_per_variant_consequence(small_variant_df) %>%
   add_common_theme_elements()
 ```
 
+Example
+```r
 ref_data_filepath <- "test_data/TSO_Reference.xlsx"
 flowcell_barcode <- str_extract(cvo_data_dir, "AH.+XY")
 
