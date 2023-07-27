@@ -3,35 +3,55 @@
 #' @description Read in a CombinedVariantOutput.tsv file
 #'
 #' @param cvo_file_path a file path to a CombinedVariantOutput.tsv file
+#' @param local_app specifies whether quality metrics are coming from local app
 #'
 #' @return A combined.variant.output object
 #' @export
 #'
 #' @examples
-cvo <- function(cvo_file_path){
-  new_combined_variant_output(cvo_file_path)
+cvo <- function(cvo_file_path, local_app=FALSE){
+  new_combined_variant_output(cvo_file_path, local_app)
 }
 
 #' Constructor function for combined.variant.output objects
 #' Not to be called directly
 #'
 #' @param cvo_file_path a file path to a CombinedVariantOutput.tsv file
+#' @param local_app specifies whether quality metrics are coming from local app
 #'
 #' @return A combined.variant.output object
-new_combined_variant_output <- function(cvo_file_path) {
+new_combined_variant_output <- function(cvo_file_path, local_app=FALSE) {
+
+  ANALYSIS_DETAILS_STRING <- 'Analysis Details'
+  GENE_AMP_STRING <- 'Gene Amplifications'
+  PERCENT_MSI_STRING <- 'Percent Unstable MSI Sites'
 
   cvo_file <- readr::read_file(cvo_file_path)
   split_cvo_string <- stringr::str_split(string = cvo_file, pattern = "\\[") %>% unlist()
 
+  # parse analysis details, sequencing run details, TMB, and MSI part of provided CombinedVariantOutput file
+  start_info <- which(grepl(ANALYSIS_DETAILS_STRING,split_cvo_string))
+  end_info <- which(grepl(PERCENT_MSI_STRING, split_cvo_string))
+
   # handle the parts of the file that are structured as key-value pairs
   # i.e. metadata and TMB/MSI sections
-  records <- purrr::map(split_cvo_string[2:5], parse_cvo_record)
+  records <- purrr::map(split_cvo_string[start_info:end_info], parse_cvo_record)
   names(records) <- c("analysis_details", "sequencing_run_details", "tmb", "msi")
 
   # handle the parts of the file that are structured as tabular data
   # i.e. gene amplifications, splice variants, fusions, and small variants
-  tables <- purrr::map(split_cvo_string[6:9], parse_cvo_table)
-  names(tables) <- c("gene_amplifications", "splice_variants", "fusions", "small_variants")
+  start_data <- pmatch(GENE_AMP_STRING,split_cvo_string)
+  end_data <- length(split_cvo_string)
+
+  tables <- purrr::map(split_cvo_string[start_data:end_data], parse_cvo_table)
+
+  # the number of tables is different between local app and DRAGEN analysis pipeline
+  if (local_app) {
+    names(tables) <- c("gene_amplifications", "splice_variants", "fusions", "small_variants")
+  }
+  else {
+    names(tables) <- c("gene_amplifications", "splice_variants", "fusions", "exon_level_cnvs", "small_variants")
+  }
 
   return(structure(c(records, tables), class = "combined.variant.output"))
 }
@@ -45,18 +65,18 @@ validate_tso500 <- function() {}
 
 #' Read in a batch of CombinedVariantOutput.tsv files into a list
 #'
-#' @param cvo_directory a file path to a directory containing one of more
-#' CombinedVariantOutput.tsv files
+#' @param cvo_directory a file path to a directory containing one of more CombinedVariantOutput.tsv files
+#' @param local_app specifies whether quality metrics are coming from local app
 #'
 #' @return A named list of combined.variant.output objects
 #' @export
-read_cvo_data <- function(cvo_directory){
+read_cvo_data <- function(cvo_directory, local_app=FALSE){
   cvo_files <- list.files(
     path = cvo_directory,
     pattern = "*CombinedVariantOutput.tsv",
     full.names = TRUE
   )
-  cvo_data <- map(cvo_files, cvo)
+  cvo_data <- map(cvo_files, cvo, local_app)
   names(cvo_data) <- map(cvo_data, ~ .x$analysis_details$pair_id)
   cvo_data
 }

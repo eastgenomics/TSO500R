@@ -35,10 +35,11 @@ new_combined_quality_metrics_output <- function(metrics_file_path, local_app=FAL
   tables <- purrr::map(split_qmo_string[3:11], parse_qmo_table)
 
   # the order of tables is different between local app and DRAGEN analysis pipeline
-  names(tables) <- c("run_qc_metrics", "analysis_status", "dna_qc_metrics", "dna_qc_metrics_snvtmb", "dna_qc_metrics_msi", "dna_qc_metrics_cnv", "rna_qc_metrics", "dna_expanded_metrics", "rna_expanded_metrics")
-  
   if (local_app) {
     names(tables) <- c("run_qc_metrics", "analysis_status", "dna_qc_metrics", "dna_qc_metrics_snvtmb", "dna_qc_metrics_msi", "dna_qc_metrics_cnv", "dna_expanded_metrics", "rna_qc_metrics", "rna_expanded_metrics")
+  }
+  else {
+    names(tables) <- c("run_qc_metrics", "analysis_status", "dna_qc_metrics", "dna_qc_metrics_snvtmb", "dna_qc_metrics_msi", "dna_qc_metrics_cnv", "rna_qc_metrics", "dna_expanded_metrics", "rna_expanded_metrics")
   }
 
   return(structure(c(records, tables), class = "combined.quality.metrics.output"))
@@ -65,8 +66,11 @@ read_qmo_data <- function(qmo_directory, local_app=FALSE){
     pattern = "*MetricsOutput.tsv",
     full.names = TRUE
   )
-  qmo_data <- map(qmo_files, qualitymetrics, local_app)
-  names(qmo_data) <- map(qmo_data, ~ .x$header$output_time)
+  
+  qmo_data <- map(qmo_files, qualitymetrics, local_app) %>%
+    set_names(str_remove(basename(qmo_files), "\\.tsv$")) 
+  #names(qmo_data) <- map(qmo_data, ~ .x$header$output_time)
+
   qmo_data
 }
 
