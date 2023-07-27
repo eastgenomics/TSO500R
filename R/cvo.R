@@ -46,7 +46,6 @@ new_combined_variant_output <- function(cvo_file_path, local_app=FALSE) {
   tables <- purrr::map(split_cvo_string[start_data:end_data], parse_cvo_table)
 
   # the number of tables is different between local app and DRAGEN analysis pipeline
-  print(local_app)
   if (local_app) {
     names(tables) <- c("gene_amplifications", "splice_variants", "fusions", "small_variants")
   }
