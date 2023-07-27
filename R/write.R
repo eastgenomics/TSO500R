@@ -122,26 +122,26 @@ ${tso500_data}"
   DATA_STRING <- '[Data]'
   
   # Read text file into string
-  cvo_file <- readr::read_file(samplesheet)
-  split_cvo_string <- stringr::str_split(string = cvo_file, pattern = "\r\n") %>% unlist()
+  samplesheet_file <- readr::read_file(samplesheet)
+  split_samplesheet_string <- stringr::str_split(string = samplesheet_file, pattern = "\r\n") %>% unlist()
   
   # parse header part of provided sample sheet
-  start_header <- pmatch(HEADER_STRING,split_cvo_string) + 1
-  end_header <- which(grepl(CHEMISTRY_STRING, split_cvo_string))
-  header <- read.csv(text=split_cvo_string[start_header:end_header],header=FALSE) %>%
+  start_header <- pmatch(HEADER_STRING, split_samplesheet_string) + 1
+  end_header <- which(grepl(CHEMISTRY_STRING, split_samplesheet_string))
+  header <- read.csv(text=split_samplesheet_string[start_header:end_header],header=FALSE) %>%
     purrr::discard(~all(is.na(.))) %>%
     pivot_wider(names_from=V1, values_from=V2)
   
   # parse settings part of provided sample sheet
-  start_settings <- pmatch(SETTINGS_STRING,split_cvo_string) + 1
-  end_settings <- which(grepl(OVERRIDE_CYCLES_STRING, split_cvo_string))
-  settings <- read.csv(text=split_cvo_string[start_settings:end_settings],header=FALSE) %>%
+  start_settings <- pmatch(SETTINGS_STRING, split_samplesheet_string) + 1
+  end_settings <- which(grepl(OVERRIDE_CYCLES_STRING, split_samplesheet_string))
+  settings <- read.csv(text=split_samplesheet_string[start_settings:end_settings],header=FALSE) %>%
     purrr::discard(~all(is.na(.))) %>%
     pivot_wider(names_from=V1, values_from=V2)
   
   # prase data part of provided sample sheet
-  start_data <- pmatch(DATA_STRING,split_cvo_string) + 1
-  data <- read.csv(text=split_cvo_string[start_data:length(split_cvo_string)])
+  start_data <- pmatch(DATA_STRING, split_samplesheet_string) + 1
+  data <- read.csv(text=split_samplesheet_string[start_data:length(split_samplesheet_string)])
   
   # transform bclconvert data
   bclconvert_data <- data %>%
