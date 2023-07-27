@@ -66,8 +66,11 @@ read_qmo_data <- function(qmo_directory, local_app=FALSE){
     pattern = "*MetricsOutput.tsv",
     full.names = TRUE
   )
-  qmo_data <- map(qmo_files, qualitymetrics, local_app)
-  names(qmo_data) <- map(qmo_data, ~ .x$header$output_time)
+  
+  qmo_data <- map(qmo_files, qualitymetrics, local_app) %>%
+    set_names(str_remove(basename(qmo_files), "\\.tsv$")) 
+  #names(qmo_data) <- map(qmo_data, ~ .x$header$output_time)
+
   qmo_data
 }
 
