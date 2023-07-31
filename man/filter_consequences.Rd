@@ -16,7 +16,7 @@ filter_consequences(variant_df, consequences, type_column = "consequence_s")
 \item{type_column}{Name of column with variant types (default: consequence_s)}
 }
 \value{
-data.frame
+data frame with filtered consequences
 }
 \description{
 Filters variant data for variant consequences. Removes

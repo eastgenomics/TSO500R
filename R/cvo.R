@@ -8,7 +8,6 @@
 #' @return A combined.variant.output object
 #' @export
 #'
-#' @examples
 cvo <- function(cvo_file_path, local_app=FALSE){
   new_combined_variant_output(cvo_file_path, local_app)
 }
@@ -60,7 +59,7 @@ new_combined_variant_output <- function(cvo_file_path, local_app=FALSE) {
 #' Not to be called directly
 #' NOT IMPLEMENTED
 #'
-#' @return
+#' @return boolean
 validate_tso500 <- function() {}
 
 #' Read in a batch of CombinedVariantOutput.tsv files into a list
@@ -69,6 +68,7 @@ validate_tso500 <- function() {}
 #' @param local_app specifies whether quality metrics are coming from local app
 #'
 #' @return A named list of combined.variant.output objects
+#'
 #' @export
 read_cvo_data <- function(cvo_directory, local_app=FALSE){
   cvo_files <- list.files(
@@ -87,6 +87,7 @@ read_cvo_data <- function(cvo_directory, local_app=FALSE){
 #' @param cvo_obj cvo_obj
 #'
 #' @return A data frame of small variants
+#'
 #' @export
 get_small_variants <- function(cvo_obj, ...){
   UseMethod("get_small_variants", cvo_obj)
@@ -98,6 +99,7 @@ get_small_variants <- function(cvo_obj, ...){
 #' @param cvo_obj cvo_obj
 #'
 #' @return A data frame of gene amplifications
+#'
 #' @export
 get_gene_amplifications <- function(cvo_obj, ...){
   UseMethod("get_gene_amplifications", cvo_obj)
@@ -109,6 +111,7 @@ get_gene_amplifications <- function(cvo_obj, ...){
 #' @param cvo_obj cvo_obj
 #'
 #' @return A data frame of splice variants
+#'
 #' @export
 get_splice_variants <- function(cvo_obj, ...){
   UseMethod("get_splice_variants", cvo_obj)
@@ -120,6 +123,7 @@ get_splice_variants <- function(cvo_obj, ...){
 #' @param cvo_obj cvo_obj
 #'
 #' @return A data frame of fusions
+#'
 #' @export
 get_fusions <- function(cvo_obj, ...){
   UseMethod("get_fusions", cvo_obj)
@@ -130,6 +134,7 @@ get_fusions <- function(cvo_obj, ...){
 #' @param cvo_obj cvo_obj
 #' @return A data frame
 #' @method get_small_variants combined.variant.output
+#'
 #' @export
 get_small_variants.combined.variant.output <- function(cvo_obj){
   suppressWarnings(
@@ -149,6 +154,7 @@ get_small_variants.combined.variant.output <- function(cvo_obj){
 #' @param cvo_obj cvo_obj
 #' @return A data frame
 #' @method get_gene_amplifications combined.variant.output
+#'
 #' @export
 get_gene_amplifications.combined.variant.output <- function(cvo_obj){
   suppressWarnings(
@@ -168,6 +174,7 @@ get_gene_amplifications.combined.variant.output <- function(cvo_obj){
 #' @param cvo_obj cvo_obj
 #' @return A data frame
 #' @method get_splice_variants combined.variant.output
+#'
 #' @export
 get_splice_variants.combined.variant.output <- function(cvo_obj){
   suppressWarnings(
@@ -187,6 +194,7 @@ get_splice_variants.combined.variant.output <- function(cvo_obj){
 #' @param cvo_obj cvo_obj
 #' @return A data frame
 #' @method get_fusions combined.variant.output
+#'
 #' @export
 get_fusions.combined.variant.output <- function(cvo_obj){
   suppressWarnings(

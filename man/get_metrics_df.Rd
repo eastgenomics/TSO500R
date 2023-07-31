@@ -8,10 +8,10 @@ objects, returning a data frame of TMB/MSI per sample}
 get_metrics_df(cvo_data)
 }
 \arguments{
-\item{cvo_data}{}
+\item{cvo_data}{CVO object}
 }
 \value{
-data.frame
+data frame with TMB/MSI metrics
 }
 \description{
 Extracts all TMB/MSI metrics from list of combined.variant.output

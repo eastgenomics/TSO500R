@@ -4,10 +4,12 @@
 \alias{cvo}
 \title{Read in a CombinedVariantOutput.tsv file and store as an object}
 \usage{
-cvo(cvo_file_path)
+cvo(cvo_file_path, local_app = FALSE)
 }
 \arguments{
 \item{cvo_file_path}{a file path to a CombinedVariantOutput.tsv file}
+
+\item{local_app}{specifies whether quality metrics are coming from local app}
 }
 \value{
 A combined.variant.output object

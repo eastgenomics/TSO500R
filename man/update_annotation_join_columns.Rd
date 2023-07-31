@@ -7,7 +7,7 @@
 update_annotation_join_columns(small_variant_df)
 }
 \arguments{
-\item{small_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
 }
 \value{
 data frame

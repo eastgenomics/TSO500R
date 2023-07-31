@@ -21,7 +21,7 @@ prepare_dataframe_for_oncoprint(
 \item{variant_type_column}{Column holding variant types}
 }
 \value{
-data.frame
+data frame as needed for onocprint plot
 }
 \description{
 Transforms data frame holding variant information to a matrix that can be used as OncoPrint input

@@ -6,9 +6,8 @@
 #' @param local_app specifies whether quality metrics are coming from local app
 #'
 #' @return A quality.metrics.output object
+#' 
 #' @export
-#'
-#' @examples
 qualitymetrics <- function(metrics_file_path, local_app=FALSE){
   new_combined_quality_metrics_output(metrics_file_path, local_app)
 }
@@ -49,7 +48,7 @@ new_combined_quality_metrics_output <- function(metrics_file_path, local_app=FAL
 #' Not to be called directly
 #' NOT IMPLEMENTED
 #'
-#' @return
+#' @return boolean
 validate_tso500_qc <- function() {}
 
 #' Read in a batch of MetricsOutput.tsv files into a list
@@ -80,6 +79,7 @@ read_qmo_data <- function(qmo_directory, local_app=FALSE){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with run qc metrics
+#'
 #' @export
 get_run_qc_metrics <- function(qmo_obj, ...){
   UseMethod("get_run_qc_metrics", qmo_obj)
@@ -91,6 +91,7 @@ get_run_qc_metrics <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with the analysis status
+#'
 #' @export
 get_analysis_status <- function(qmo_obj, ...){
   UseMethod("get_analysis_status", qmo_obj)
@@ -102,6 +103,7 @@ get_analysis_status <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with the dna qc metrics
+#'
 #' @export
 get_dna_qc_metrics <- function(qmo_obj, ...){
   UseMethod("get_dna_qc_metrics", qmo_obj)
@@ -113,6 +115,7 @@ get_dna_qc_metrics <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with dna qc metrics (small variants/TMB)
+#'
 #' @export
 get_dna_qc_metrics_snvtmb <- function(qmo_obj, ...){
   UseMethod("get_dna_qc_metrics_snvtmb", qmo_obj)
@@ -124,6 +127,7 @@ get_dna_qc_metrics_snvtmb <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with dna qc metrics (MSI)
+#'
 #' @export
 get_dna_qc_metrics_msi <- function(qmo_obj, ...){
   UseMethod("get_dna_qc_metrics_msi", qmo_obj)
@@ -135,6 +139,7 @@ get_dna_qc_metrics_msi <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with dna qc metrics (CNV)
+#'
 #' @export
 get_dna_qc_metrics_cnv <- function(qmo_obj, ...){
   UseMethod("get_dna_qc_metrics_cnv", qmo_obj)
@@ -146,6 +151,7 @@ get_dna_qc_metrics_cnv <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with extended dna qc metrics
+#'
 #' @export
 get_dna_expanded_metrics <- function(qmo_obj, ...){
   UseMethod("get_dna_expanded_metrics", qmo_obj)
@@ -157,6 +163,7 @@ get_dna_expanded_metrics <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with rna qc metrics
+#'
 #' @export
 get_rna_qc_metrics <- function(qmo_obj, ...){
   UseMethod("get_rna_qc_metrics", qmo_obj)
@@ -168,6 +175,7 @@ get_rna_qc_metrics <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #'
 #' @return A data frame with expanded rna qc metrics
+#'
 #' @export
 get_rna_expanded_metrics <- function(qmo_obj, ...){
   UseMethod("get_rna_expanded_metrics", qmo_obj)
@@ -178,6 +186,7 @@ get_rna_expanded_metrics <- function(qmo_obj, ...){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_run_qc_metrics combined.quality.metrics.output
+#'
 #' @export
 get_run_qc_metrics.combined.quality.metrics.output <- function(qmo_obj){
   suppressWarnings(
@@ -197,6 +206,7 @@ get_run_qc_metrics.combined.quality.metrics.output <- function(qmo_obj){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_analysis_status combined.quality.metrics.output
+#'
 #' @export
 get_analysis_status.combined.quality.metrics.output <- function(qmo_obj){
   suppressWarnings(
@@ -218,6 +228,7 @@ get_analysis_status.combined.quality.metrics.output <- function(qmo_obj){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_dna_qc_metrics combined.quality.metrics.output
+#'
 #' @export
 get_dna_qc_metrics.combined.quality.metrics.output <- function(qmo_obj){
     suppressWarnings(
@@ -237,6 +248,7 @@ get_dna_qc_metrics.combined.quality.metrics.output <- function(qmo_obj){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_dna_qc_metrics_snvtmb combined.quality.metrics.output
+#'
 #' @export
 get_dna_qc_metrics_snvtmb.combined.quality.metrics.output <- function(qmo_obj){
     suppressWarnings(
@@ -256,6 +268,7 @@ get_dna_qc_metrics_snvtmb.combined.quality.metrics.output <- function(qmo_obj){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_dna_qc_metrics_msi combined.quality.metrics.output
+#'
 #' @export
 get_dna_qc_metrics_msi.combined.quality.metrics.output <- function(qmo_obj){
     suppressWarnings(
@@ -275,6 +288,7 @@ get_dna_qc_metrics_msi.combined.quality.metrics.output <- function(qmo_obj){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_dna_qc_metrics_cnv combined.quality.metrics.output
+#'
 #' @export
 get_dna_qc_metrics_cnv.combined.quality.metrics.output <- function(qmo_obj){
     suppressWarnings(
@@ -294,6 +308,7 @@ get_dna_qc_metrics_cnv.combined.quality.metrics.output <- function(qmo_obj){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_dna_expanded_metrics combined.quality.metrics.output
+#'
 #' @export
 get_dna_expanded_metrics.combined.quality.metrics.output <- function(qmo_obj){
     suppressWarnings(
@@ -308,13 +323,12 @@ get_dna_expanded_metrics.combined.quality.metrics.output <- function(qmo_obj){
     return(dna_expanded_metrics_df)
 }
 
-get_rna_qc_metrics
-
 #' Get rna qc metrics from combined.quality.metrics.output object
 #'
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_rna_qc_metrics combined.quality.metrics.output
+#'
 #' @export
 get_rna_qc_metrics.combined.quality.metrics.output <- function(qmo_obj){
     suppressWarnings(
@@ -334,6 +348,7 @@ get_rna_qc_metrics.combined.quality.metrics.output <- function(qmo_obj){
 #' @param qmo_obj qmo_obj
 #' @return A data frame
 #' @method get_rna_expanded_metrics combined.quality.metrics.output
+#'
 #' @export
 get_rna_expanded_metrics.combined.quality.metrics.output <- function(qmo_obj){
     suppressWarnings(

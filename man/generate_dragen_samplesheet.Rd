@@ -41,6 +41,9 @@ generate_dragen_samplesheet(
 
 \item{outfile}{path to output CSV file}
 }
+\value{
+the dragen analysis input sample sheet
+}
 \description{
 Generate sample sheet for DRAGEN TSO500 Anaylsis Pipeline input based on TSO500 sample sheet.
 }

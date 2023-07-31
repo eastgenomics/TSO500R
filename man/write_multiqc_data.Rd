@@ -23,6 +23,9 @@ write_multiqc_data(
 
 \item{file_path}{path to output file}
 }
+\value{
+the files needed for generating a MultiQC report
+}
 \description{
 Write files needed for reporting in MultiQC.
 }

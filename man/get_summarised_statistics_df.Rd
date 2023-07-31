@@ -7,7 +7,9 @@
 get_summarised_statistics_df(data_df, column_name)
 }
 \arguments{
-\item{column_name}{}
+\item{data_df}{data frame}
+
+\item{column_name}{column name}
 }
 \value{
 data.frame

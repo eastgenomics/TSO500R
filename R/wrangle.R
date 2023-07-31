@@ -251,7 +251,9 @@ read_rna_expanded_metrics <- function(qmo_list){
 #' }
 #'
 #' @param small_variant_df Data-frame of small variants
-#' @return
+#' 
+#' @return processed and filtered data frame
+#' 
 #' @export
 process_and_filter_small_variant_data <- function(small_variant_df){
 
@@ -281,7 +283,8 @@ process_and_filter_small_variant_data <- function(small_variant_df){
 #' @param consequences List of consequences to filter out
 #' @param type_column Name of column with variant types (default: consequence_s)
 #'
-#' @return data.frame
+#' @return data frame with filtered consequences
+#' 
 #' @export
 filter_consequences <- function(variant_df, consequences, type_column="consequence_s"){
   filtered_df <- variant_df %>%
@@ -296,7 +299,8 @@ filter_consequences <- function(variant_df, consequences, type_column="consequen
 #' @param consequences List of consequences to keep
 #' @param type_column Name of column with variant types (default: consequence_s)
 #'
-#' @return data.frame
+#' @return data frame with consequences kept as specified
+#' 
 #' @export
 keep_consequences <- function(variant_df, consequences, type_column="consequence_s"){
   filtered_df <- variant_df %>%
@@ -307,10 +311,12 @@ keep_consequences <- function(variant_df, consequences, type_column="consequence
 #' Helper function to filter small variant data according
 #' to specified depth
 #'
-#' @param small_variant_df
-#' @param depth_limit
+#' @param small_variant_df data frame with small variants
+#' @param depth_limit depth threshold
 #'
-#' @return
+#' @return data frame filtered by depth
+#'
+#' @export
 filter_depth <- function(small_variant_df, depth_limit = 0){
   filtered_df <- dplyr::filter(small_variant_df, depth > depth_limit)
   return(filtered_df)
@@ -319,9 +325,11 @@ filter_depth <- function(small_variant_df, depth_limit = 0){
 #' Helper function to filter small variant data according
 #' to the GermlineFilterDatabase filter
 #'
-#' @param small_variant_df
+#' @param small_variant_df data frame with small variants
 #'
-#' @return
+#' @return data frame filtered by germlineDB annotation
+#'
+#' @export
 filter_germline_db <- function(small_variant_df){
   filtered_df <- dplyr::filter(small_variant_df, !GermlineFilterDatabase)
   return(filtered_df)
@@ -330,9 +338,11 @@ filter_germline_db <- function(small_variant_df){
 #' Helper function to filter small variant data according
 #' to the GermlineFilterProxi filter
 #'
-#' @param small_variant_df
+#' @param small_variant_df data frame with small variants
 #'
-#' @return
+#' @return data frame filtered by GermlineFilterProxi
+#'
+#' @export
 filter_germline_proxi <- function(small_variant_df){
   filtered_df <- dplyr::filter(small_variant_df, !GermlineFilterProxi)
   return(filtered_df)
@@ -341,9 +351,11 @@ filter_germline_proxi <- function(small_variant_df){
 #' Helper function to filter small variant data and keep
 #' only variants with annotated COSMIC ID(s)
 #'
-#' @param small_variant_df
+#' @param small_variant_df data frame with small variants
 #'
-#' @return
+#' @return data frame filtered by COSMIC ID
+#'
+#' @export
 filter_for_cosmic_id <- function(small_variant_df){
   filtered_df <- dplyr::filter(small_variant_df, !is.na(CosmicIDs))
   return(filtered_df)
@@ -352,9 +364,11 @@ filter_for_cosmic_id <- function(small_variant_df){
 #' Helper function to filter small variant data and keep
 #' only variants that are included in TMB numerator
 #'
-#' @param small_variant_df
+#' @param small_variant_df data frame with small variants
 #'
-#' @return
+#' @return data frame filtered by TMB inclusion
+#'
+#' @export
 filter_for_Included_in_TMB <- function(small_variant_df){
   filtered_df <- dplyr::filter(small_variant_df, IncludedInTMBNumerator)
   return(filtered_df)
@@ -363,9 +377,10 @@ filter_for_Included_in_TMB <- function(small_variant_df){
 #' Parses P-Dot notation column, splitting it into distinct NP ID and
 #' amino acid variant columns
 #'
-#' @param small_variant_df
+#' @param small_variant_df data frame with small variants
 #'
-#' @return
+#' @return parsed protein notation
+#' 
 #' @export
 parse_p_dot_notation <- function(small_variant_df){
   tidyr::extract(
@@ -379,7 +394,7 @@ parse_p_dot_notation <- function(small_variant_df){
 
 #' Helper function to make small variant DF joinable to annotation data
 #'
-#' @param small_variant_df
+#' @param small_variant_df data frame with small variants
 #'
 #' @return data frame
 update_annotation_join_columns <- function(small_variant_df){
@@ -393,10 +408,11 @@ update_annotation_join_columns <- function(small_variant_df){
 
 #' Adds GEL annotation data to small variant data
 #'
-#' @param small_variant_df
-#' @param annotation_data_list
+#' @param small_variant_df data frame with small variants
+#' @param annotation_data_list annotation data list
 #'
-#' @return
+#' @return data frame with annotation data
+#'
 #' @export
 add_annotation_data <- function(small_variant_df, annotation_data_list){
   key_order = c("protein", "coord_id", "gene", "gene", "gene", "gene", "gene")
@@ -407,10 +423,11 @@ add_annotation_data <- function(small_variant_df, annotation_data_list){
 
 #' Adds information from TMB trace table to small variant data
 #'
-#' @param small_variant_df
-#' @param tmb_variant_df
+#' @param small_variant_df data frame with small variants
+#' @param tmb_variant_df data frame with TMB trace information
 #'
-#' @return
+#' @return joined data frame
+#'
 #' @export
 add_tmb_variant_data <- function(small_variant_df, tmb_variant_df){
   joined_data <- small_variant_df %>% 
@@ -421,10 +438,11 @@ add_tmb_variant_data <- function(small_variant_df, tmb_variant_df){
 #' Adds amplifications to small variant data, 
 #' variant type (consequence_s) column renamed to variant_type
 #'
-#' @param small_variant_df
-#' @param tmb_variant_df
+#' @param small_variant_df data frame with small variants
+#' @param amplification_df data frame with amplifications
 #'
-#' @return
+#' @return joined data frame
+#'
 #' @export
 add_amplification_data <- function(small_variant_df, amplification_df){
   prepared_amplification_df <- amplification_df %>% 
@@ -440,8 +458,8 @@ add_amplification_data <- function(small_variant_df, amplification_df){
 #' Helper function to extract TMB/MSI metrics from
 #' list of combined.variant.output objects
 #'
-#' @param cvo_data
-#' @param category
+#' @param cvo_data CVO object
+#' @param category category to extract, default: tmb
 #'
 #' @return data.frame
 extract_metrics <- function(cvo_data, category = "tmb"){
@@ -452,9 +470,10 @@ extract_metrics <- function(cvo_data, category = "tmb"){
 #' Extracts all TMB/MSI metrics from list of combined.variant.output
 #' objects, returning a data frame of TMB/MSI per sample
 #'
-#' @param cvo_data
+#' @param cvo_data CVO object
 #'
-#' @return data.frame
+#' @return data frame with TMB/MSI metrics
+#'
 #' @export
 get_metrics_df <- function(cvo_data){
   tmb_df <- extract_metrics(cvo_data, category = "tmb")
@@ -468,9 +487,10 @@ get_metrics_df <- function(cvo_data){
 #' Extracts all analysis details from list of combined.variant.output
 #' objects, returning a data frame of analysis details per sample
 #'
-#' @param cvo_data
+#' @param cvo_data CVO object
 #'
-#' @return data.frame
+#' @return data frame with analysis details
+#'
 #' @export
 get_analysis_details_df <- function(cvo_data){
   analysis_details <- extract_metrics(cvo_data, category = "analysis_details")
@@ -483,9 +503,10 @@ get_analysis_details_df <- function(cvo_data){
 #' Extracts all sequencing run details from list of combined.variant.output
 #' objects, returning a data frame of sequencing run details per sample
 #'
-#' @param cvo_data
+#' @param cvo_data CVO object
 #'
-#' @return data.frame
+#' @return data frame with sequencing run details
+#'
 #' @export
 get_sequencing_run_details_df <- function(cvo_data){
   sequencing_run_details <- extract_metrics(cvo_data, category = "sequencing_run_details")
@@ -497,8 +518,8 @@ get_sequencing_run_details_df <- function(cvo_data){
 
 #' Helper function to extract summarized counts based on sample_id
 #'
-#' @param data_df
-#' @param column_name
+#' @param data_df data frame
+#' @param column_name column name
 #'
 #' @return data.frame
 get_summarised_statistics_df <- function(data_df, column_name){
@@ -519,10 +540,11 @@ get_summarised_statistics_df <- function(data_df, column_name){
 #' Extracts the counts of the different variant types from list of combined.variant.output
 #' objects, returning a data frame of counts per sample
 #'
-#' @param cvo_data
-#' @param category
+#' @param cvo_data CVO object
+#' @param category category to extract information on
 #'
-#' @return data.frame
+#' @return data frame with variant type statistics
+#'
 #' @export
 get_count_df <- function(cvo_data){
   # most of the following steps are taken to make sure that we get numbers for all samples and 
@@ -569,7 +591,8 @@ get_count_df <- function(cvo_data){
 #' @param gene_column Column holding genes
 #' @param variant_type_column Column holding variant types
 #'
-#' @return data.frame
+#' @return data frame as needed for onocprint plot
+#' 
 #' @export
 prepare_dataframe_for_oncoprint <- function(variant_data_frame, id_column="sample_id", gene_column="gene", variant_type_column="consequence_s"){
   oncoprint_df <- variant_data_frame %>%

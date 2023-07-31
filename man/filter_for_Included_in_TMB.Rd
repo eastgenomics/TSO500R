@@ -8,7 +8,10 @@ only variants that are included in TMB numerator}
 filter_for_Included_in_TMB(small_variant_df)
 }
 \arguments{
-\item{small_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
+}
+\value{
+data frame filtered by TMB inclusion
 }
 \description{
 Helper function to filter small variant data and keep

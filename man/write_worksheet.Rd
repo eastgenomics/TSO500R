@@ -7,7 +7,16 @@
 write_worksheet(data, sheet_name, sheet_index, workbook)
 }
 \arguments{
-\item{workbook}{}
+\item{data}{the input data}
+
+\item{sheet_name}{the sheet name}
+
+\item{sheet_index}{the sheet index}
+
+\item{workbook}{the Excel workbook}
+}
+\value{
+the Excel workbook
 }
 \description{
 Write worksheet to Excel workbook.

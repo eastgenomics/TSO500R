@@ -5,9 +5,8 @@
 #' @param tmb_file_path a file path to a TMB_trace.tsv file
 #'
 #' @return A tmb.variant.output object
+#' 
 #' @export
-#'
-#' @examples
 tmb <- function(tmb_file_path){
   new_tmb_variant_output(tmb_file_path)
 }
@@ -18,6 +17,7 @@ tmb <- function(tmb_file_path){
 #' TMB_trace.tsv files
 #'
 #' @return A named list of data frame objects
+#' 
 #' @export
 read_tmb_trace_data <- function(tmb_directory){
   tmb_files <- list.files(
@@ -42,6 +42,7 @@ read_tmb_trace_data <- function(tmb_directory){
 #' *tmb.json files
 #'
 #' @return A named list of data frame objects
+#' 
 #' @export
 read_tmb_details_data <- function(tmb_directory){
   tmb_files <- list.files(
@@ -67,6 +68,7 @@ read_tmb_details_data <- function(tmb_directory){
 #' *tmb.metrics.csv files
 #'
 #' @return A named list of data frame objects
+#' 
 #' @export
 read_tmb_details_data_csv <- function(tmb_directory){
   tmb_files <- list.files(

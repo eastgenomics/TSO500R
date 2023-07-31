@@ -8,7 +8,10 @@ to the GermlineFilterDatabase filter}
 filter_germline_db(small_variant_df)
 }
 \arguments{
-\item{small_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
+}
+\value{
+data frame filtered by germlineDB annotation
 }
 \description{
 Helper function to filter small variant data according

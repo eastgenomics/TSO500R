@@ -8,7 +8,12 @@ variant type (consequence_s) column renamed to variant_type}
 add_amplification_data(small_variant_df, amplification_df)
 }
 \arguments{
-\item{tmb_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
+
+\item{amplification_df}{data frame with amplifications}
+}
+\value{
+joined data frame
 }
 \description{
 Adds amplifications to small variant data, 

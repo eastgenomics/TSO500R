@@ -8,7 +8,10 @@ to the GermlineFilterProxi filter}
 filter_germline_proxi(small_variant_df)
 }
 \arguments{
-\item{small_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
+}
+\value{
+data frame filtered by GermlineFilterProxi
 }
 \description{
 Helper function to filter small variant data according

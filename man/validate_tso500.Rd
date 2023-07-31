@@ -8,6 +8,9 @@ NOT IMPLEMENTED}
 \usage{
 validate_tso500()
 }
+\value{
+boolean
+}
 \description{
 Validator function for combined.variant.output constructor
 Not to be called directly

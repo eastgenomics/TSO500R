@@ -11,6 +11,9 @@ write_rdata_file(data_frames, file_path)
 
 \item{file_path}{path to output file}
 }
+\value{
+the provided data frames as RData object
+}
 \description{
 Save data frames to RData object.
 }

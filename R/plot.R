@@ -4,6 +4,7 @@
 #' @param small_variant_df Data frame containing small variants
 #'
 #' @return ggplot object
+#' 
 #' @export
 plot_af_per_variant_consequence <- function(small_variant_df){
   g <- ggplot(data = small_variant_df) +
@@ -25,6 +26,7 @@ plot_af_per_variant_consequence <- function(small_variant_df){
 #' @param small_variant_df Data frame containing small variants
 #'
 #' @return ggplot object
+#' 
 #' @export
 plot_af_histogram <- function(small_variant_df){
   g <- ggplot(small_variant_df, aes(x = allele_frequency, group = sample_id,
@@ -67,9 +69,8 @@ plot_af_density <- function(small_variant_df){
 #' @param top Plot top {top} genes for given variant matrix (default: all)
 #'
 #' @return ggplot object
+#'
 #' @export
-#' @TODO figure out how to add (bottom/top annotations optionally)
-#' @TODO add possibility to change order of data
 plot_onco_print <- function(variant_matrix, column_title, alter_list, variant_colors, heatmap_legend, bottom_annotation=anno_empty(border = FALSE), top_annotation=anno_empty(border = FALSE), right_annotation=anno_empty(border = FALSE), left_annotation=anno_empty(border = FALSE), top=nrow(variant_matrix)){
   # get top {top} genes
   top_index = order(apply(variant_matrix, 1, function(x) sum(x != "")), decreasing = TRUE)[1:top]
@@ -98,6 +99,7 @@ plot_onco_print <- function(variant_matrix, column_title, alter_list, variant_co
 #' @param ggplot_object ggplot2 plot object
 #'
 #' @return ggplot object
+#' 
 #' @export
 add_common_theme_elements <- function(ggplot_object){
   common_theme_elements <- theme(
