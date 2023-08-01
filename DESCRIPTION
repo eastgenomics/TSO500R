@@ -1,12 +1,13 @@
 Package: tso500R
 Type: Package
-Title: Parser For TSO500 CombinedVariantOutput Files 
+Title: Parser For TSO500 Analysis Output Files 
 Version: 0.1.0
-Author: Sophie Paul
-Maintainer: Sophie Paul <sophie.paul@addenbrookes.nhs.uk>
-Description: Here is some things about what the package does.
-    I can write over a few lines
-License: What license is it under?
+Author: Sophie Paul, Christopher Mohr, Alexander Peltzer
+Maintainer: Sophie Paul <sophie.paul@addenbrookes.nhs.uk>, Christopher Mohr, Alexander Peltzer
+Description: TSO500R(eader) is an R package developed for Illumina TSO500 data. It can be used for importing and processing of files produced by the Illumina TSO500 DRAGEN analysis pipeline and the LocalApp.
+The package provides different functions for parsing the various output files produced by the Illumina pipelines. This includes the quality control files as well as the analysis outputs. Besides, it offers functionality to integrate the different result types, e.g. small variants and amplifications. 
+Other features include functions for basic plotting and export functionality for writing `RData` objects or to generate DRAGEN analysis pipeline samplesheets.
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
