@@ -13,6 +13,9 @@ write_workbook(workbook_name, data_frames, sheet_names)
 
 \item{sheet_names}{character vector of worksheet names}
 }
+\value{
+the Excel workbook
+}
 \description{
 Store data frames to Microsoft Excel workbook. Submission of
   more than one data frame will result in a workbook with that many sheets.

@@ -8,6 +8,9 @@ NOT IMPLEMENTED}
 \usage{
 validate_tso500_qc()
 }
+\value{
+boolean
+}
 \description{
 Validator function for quality.metrics.output constructor
 Not to be called directly

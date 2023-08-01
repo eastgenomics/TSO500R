@@ -9,6 +9,9 @@ process_and_filter_small_variant_data(small_variant_df)
 \arguments{
 \item{small_variant_df}{Data-frame of small variants}
 }
+\value{
+processed and filtered data frame
+}
 \description{
 Processes small-variant data to comply with requirements for
 further analysis. The function:

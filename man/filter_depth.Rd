@@ -8,7 +8,12 @@ to specified depth}
 filter_depth(small_variant_df, depth_limit = 0)
 }
 \arguments{
-\item{depth_limit}{}
+\item{small_variant_df}{data frame with small variants}
+
+\item{depth_limit}{depth threshold}
+}
+\value{
+data frame filtered by depth
 }
 \description{
 Helper function to filter small variant data according

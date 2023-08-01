@@ -8,10 +8,10 @@ objects, returning a data frame of sequencing run details per sample}
 get_sequencing_run_details_df(cvo_data)
 }
 \arguments{
-\item{cvo_data}{}
+\item{cvo_data}{CVO object}
 }
 \value{
-data.frame
+data frame with sequencing run details
 }
 \description{
 Extracts all sequencing run details from list of combined.variant.output

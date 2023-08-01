@@ -7,7 +7,12 @@
 add_tmb_variant_data(small_variant_df, tmb_variant_df)
 }
 \arguments{
-\item{tmb_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
+
+\item{tmb_variant_df}{data frame with TMB trace information}
+}
+\value{
+joined data frame
 }
 \description{
 Adds information from TMB trace table to small variant data

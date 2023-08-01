@@ -7,7 +7,12 @@
 add_annotation_data(small_variant_df, annotation_data_list)
 }
 \arguments{
-\item{annotation_data_list}{}
+\item{small_variant_df}{data frame with small variants}
+
+\item{annotation_data_list}{annotation data list}
+}
+\value{
+data frame with annotation data
 }
 \description{
 Adds GEL annotation data to small variant data

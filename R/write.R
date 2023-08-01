@@ -9,6 +9,8 @@
 #' @param data_frames list of data frames
 #' @param sheet_names character vector of worksheet names
 #'
+#' @return the Excel workbook
+#'
 #' @export
 write_workbook <- function(workbook_name, data_frames, sheet_names){
   sheet_indices <- seq(length(data_frames))
@@ -23,14 +25,13 @@ write_workbook <- function(workbook_name, data_frames, sheet_names){
 
 #' Write worksheet to Excel workbook.
 #'
-#' @param data
-#' @param sheet_name
-#' @param sheet_index
-#' @param workbook
+#' @param data the input data
+#' @param sheet_name the sheet name
+#' @param sheet_index the sheet index
+#' @param workbook the Excel workbook
 #'
-#' @return
+#' @return the Excel workbook 
 #'
-#' @examples
 write_worksheet <- function(data, sheet_name, sheet_index, workbook){
   openxlsx::addWorksheet(wb = workbook, sheetName = sheet_name, gridLines = TRUE)
   openxlsx::writeDataTable(wb = workbook, sheet = sheet_index, x = data)
@@ -41,9 +42,9 @@ write_worksheet <- function(data, sheet_name, sheet_index, workbook){
 #' @param data_frames list of data frames
 #' @param file_path path to output file
 #'
-#' @return
+#' @return the provided data frames as RData object
 #'
-#' @examples
+#' @export
 write_rdata_file <- function(data_frames, file_path){
   save(data_frames, file=file_path)
 }
@@ -55,9 +56,9 @@ write_rdata_file <- function(data_frames, file_path){
 #' @param tmb_msi_data_frame data frame with tmb and msi statistics (get_metrics_df)
 #' @param file_path path to output file
 #'
-#' @return
+#' @return the files needed for generating a MultiQC report
 #'
-#' @examples
+#' @export
 write_multiqc_data <- function(analysis_details_frame, sequencing_run_details_frame, variant_stats, tmb_msi_data_frame, folder_path){
   write.table(analysis_details_frame, paste0(folder_path, "analysis_details.txt"), row.names = FALSE)
   write.table(sequencing_run_details_frame, paste0(folder_path, "sequencing_run_details.txt"), row.names = FALSE)
@@ -79,9 +80,9 @@ write_multiqc_data <- function(analysis_details_frame, sequencing_run_details_fr
 #' @param mask_short_reads reads with a length trimmed below this point are masked (default: 35)
 #' @param outfile path to output CSV file
 #'
-#' @return
+#' @return the dragen analysis input sample sheet
 #'
-#' @examples
+#' @export
 generate_dragen_samplesheet <- function(samplesheet, file_format_version="2", run_name="RunName", instrument_type="NovaSeq", software_version="3.10.9", adapter_read1, adapter_read2, adapter_behavior="trim", minimum_trimmed_read_length=35, mask_short_reads=35, outfile){
   # dragen sample sheet templates
   dragen_samplesheet_header = "[Header],,,,,,,

@@ -5,10 +5,12 @@
 \title{Constructor function for combined.variant.output objects
 Not to be called directly}
 \usage{
-new_combined_variant_output(cvo_file_path)
+new_combined_variant_output(cvo_file_path, local_app = FALSE)
 }
 \arguments{
 \item{cvo_file_path}{a file path to a CombinedVariantOutput.tsv file}
+
+\item{local_app}{specifies whether quality metrics are coming from local app}
 }
 \value{
 A combined.variant.output object

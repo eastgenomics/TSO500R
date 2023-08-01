@@ -8,7 +8,10 @@ amino acid variant columns}
 parse_p_dot_notation(small_variant_df)
 }
 \arguments{
-\item{small_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
+}
+\value{
+parsed protein notation
 }
 \description{
 Parses P-Dot notation column, splitting it into distinct NP ID and

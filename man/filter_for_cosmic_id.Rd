@@ -8,7 +8,10 @@ only variants with annotated COSMIC ID(s)}
 filter_for_cosmic_id(small_variant_df)
 }
 \arguments{
-\item{small_variant_df}{}
+\item{small_variant_df}{data frame with small variants}
+}
+\value{
+data frame filtered by COSMIC ID
 }
 \description{
 Helper function to filter small variant data and keep

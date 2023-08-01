@@ -8,10 +8,12 @@ objects, returning a data frame of counts per sample}
 get_count_df(cvo_data)
 }
 \arguments{
-\item{category}{}
+\item{cvo_data}{CVO object}
+
+\item{category}{category to extract information on}
 }
 \value{
-data.frame
+data frame with variant type statistics
 }
 \description{
 Extracts the counts of the different variant types from list of combined.variant.output

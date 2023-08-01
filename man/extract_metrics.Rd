@@ -8,7 +8,9 @@ list of combined.variant.output objects}
 extract_metrics(cvo_data, category = "tmb")
 }
 \arguments{
-\item{category}{}
+\item{cvo_data}{CVO object}
+
+\item{category}{category to extract, default: tmb}
 }
 \value{
 data.frame

@@ -8,10 +8,10 @@ objects, returning a data frame of analysis details per sample}
 get_analysis_details_df(cvo_data)
 }
 \arguments{
-\item{cvo_data}{}
+\item{cvo_data}{CVO object}
 }
 \value{
-data.frame
+data frame with analysis details
 }
 \description{
 Extracts all analysis details from list of combined.variant.output
