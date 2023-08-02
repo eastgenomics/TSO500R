@@ -7,7 +7,7 @@
 parse_qmo_record(record_string)
 }
 \arguments{
-\item{record_string}{}
+\item{record_string}{the record content as string}
 }
 \value{
 char vector

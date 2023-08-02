@@ -211,7 +211,7 @@ get_fusions.combined.variant.output <- function(cvo_obj){
 
 #' Helper function to parse key-value lines in CombinedVariantOutput.tsv
 #'
-#' @param record_string
+#' @param record_string the record content as string
 #'
 #' @return char vector
 parse_cvo_record <- function(record_string){
@@ -236,7 +236,7 @@ parse_cvo_record <- function(record_string){
 
 #' Helper function to parse tabular data in CombinedVariantOutput.tsv
 #'
-#' @param table_string
+#' @param table_string the table as string
 #'
 #' @return data.frame
 parse_cvo_table <- function(table_string){
@@ -258,7 +258,7 @@ parse_cvo_table <- function(table_string){
 #' Helper function to handle empty rows
 #' in CombinedVariantOutput.tsv tabular data
 #'
-#' @param intermediate_tbl
+#' @param intermediate_tbl intermediate table string
 #'
 #' @return data.frame
 handle_empty_cvo_table_values <- function(intermediate_tbl){
@@ -273,7 +273,7 @@ handle_empty_cvo_table_values <- function(intermediate_tbl){
 
 #' Helper function to remove header and footer from CombinedVariantOutput.tsv
 #'
-#' @param string
+#' @param string string with file content
 #'
 #' @return char vector
 trim_cvo_header_and_footer <- function(string){

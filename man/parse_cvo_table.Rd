@@ -7,7 +7,7 @@
 parse_cvo_table(table_string)
 }
 \arguments{
-\item{table_string}{}
+\item{table_string}{the table as string}
 }
 \value{
 data.frame

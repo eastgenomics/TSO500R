@@ -61,11 +61,15 @@ plot_af_density <- function(small_variant_df){
 #' Plot OncoPrint plot (heatmap) for variants
 #'
 #' @description Plot OncoPrint plot for specified list of variants
-#' @param small_variant_df Data frame containing variants for multiple samples
+#' @param variant_matrix matrix with variants for samples/entities
 #' @param column_title Title of OncoPrint plot
 #' @param alter_list List with alter_graphics functions for variant types
 #' @param variant_colors List of defined colors for variant types
 #' @param heatmap_legend List containing legend specs (title, at, labels)
+#' @param bottom_annotation the annotation object for the bottom, default: empty
+#' @param top_annotation the annotation object for the top, default: empty
+#' @param right_annotation the annotation object for the right, default: empty
+#' @param left_annotation the annotation object for the left, default: empty
 #' @param top Plot top {top} genes for given variant matrix (default: all)
 #'
 #' @return ggplot object

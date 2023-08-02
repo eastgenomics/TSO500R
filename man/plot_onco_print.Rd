@@ -18,6 +18,8 @@ plot_onco_print(
 )
 }
 \arguments{
+\item{variant_matrix}{matrix with variants for samples/entities}
+
 \item{column_title}{Title of OncoPrint plot}
 
 \item{alter_list}{List with alter_graphics functions for variant types}
@@ -26,9 +28,15 @@ plot_onco_print(
 
 \item{heatmap_legend}{List containing legend specs (title, at, labels)}
 
-\item{top}{Plot top {top} genes for given variant matrix (default: all)}
+\item{bottom_annotation}{the annotation object for the bottom, default: empty}
 
-\item{small_variant_df}{Data frame containing variants for multiple samples}
+\item{top_annotation}{the annotation object for the top, default: empty}
+
+\item{right_annotation}{the annotation object for the right, default: empty}
+
+\item{left_annotation}{the annotation object for the left, default: empty}
+
+\item{top}{Plot top {top} genes for given variant matrix (default: all)}
 }
 \value{
 ggplot object
