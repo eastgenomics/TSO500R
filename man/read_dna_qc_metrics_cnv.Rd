@@ -8,7 +8,7 @@ and return a data frame of dna qc metrics (cnv) per timepoint}
 read_dna_qc_metrics_cnv(qmo_list)
 }
 \arguments{
-\item{cvo_list}{a list of combined.quality.metrics.output objects}
+\item{qmo_list}{a list of combined.quality.metrics.output objects}
 }
 \value{
 A data frame of dna qc metrics (cnv) extracted from

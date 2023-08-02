@@ -8,7 +8,7 @@ and return a data frame of the analysis status per timepoint}
 read_analysis_status(qmo_list)
 }
 \arguments{
-\item{cvo_list}{a list of combined.quality.metrics.output objects}
+\item{qmo_list}{a list of combined.quality.metrics.output objects}
 }
 \value{
 A data frame of analysis status extracted from

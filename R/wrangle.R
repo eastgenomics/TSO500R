@@ -69,7 +69,7 @@ read_splice_variants <- function(cvo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of run qc metrics per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of small variants extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -86,7 +86,7 @@ read_run_qc_metrics <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of the analysis status per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of analysis status extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -103,7 +103,7 @@ read_analysis_status <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of dna qc metrics per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of dna qc metrics extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -120,7 +120,7 @@ read_dna_qc_metrics <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of dna qc metrics (small variants/tmb) per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of dna qc metrics (small variants/tmb) extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -137,7 +137,7 @@ read_dna_qc_metrics_snvtmb <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of dna qc metrics (msi) per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of dna qc metrics (msi) extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -154,7 +154,7 @@ read_dna_qc_metrics_msi <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of dna qc metrics (cnv) per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of dna qc metrics (cnv) extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -171,7 +171,7 @@ read_dna_qc_metrics_cnv <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of expanded dna qc metrics per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of expanded dna qc metrics extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -188,7 +188,7 @@ read_dna_expanded_metrics <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of rna qc metrics per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of rna qc metrics extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -205,7 +205,7 @@ read_rna_qc_metrics <- function(qmo_list){
 #' Read in a list of combined.quality.metrics.output objects
 #' and return a data frame of expanded rna qc metrics per timepoint
 #'
-#' @param cvo_list a list of combined.quality.metrics.output objects
+#' @param qmo_list a list of combined.quality.metrics.output objects
 #'
 #' @return A data frame of expanded rna qc metrics extracted from
 #' each combined.quality.metrics.output object, per timepoint
@@ -541,7 +541,6 @@ get_summarised_statistics_df <- function(data_df, column_name){
 #' objects, returning a data frame of counts per sample
 #'
 #' @param cvo_data CVO object
-#' @param category category to extract information on
 #'
 #' @return data frame with variant type statistics
 #'

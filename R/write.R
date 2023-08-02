@@ -54,7 +54,7 @@ write_rdata_file <- function(data_frames, file_path){
 #' @param sequencing_run_details_frame data frame with sequencing run details (get_sequencing_run_details_df)
 #' @param variant_stats data frame with variant type statistics (get_count_df)
 #' @param tmb_msi_data_frame data frame with tmb and msi statistics (get_metrics_df)
-#' @param file_path path to output file
+#' @param folder_path path to output folder
 #'
 #' @return the files needed for generating a MultiQC report
 #'

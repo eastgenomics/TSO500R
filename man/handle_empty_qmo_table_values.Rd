@@ -7,7 +7,7 @@
 handle_empty_qmo_table_values(intermediate_tbl)
 }
 \arguments{
-\item{intermediate_tbl}{}
+\item{intermediate_tbl}{intermediate table string}
 }
 \value{
 data.frame

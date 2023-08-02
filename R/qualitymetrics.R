@@ -365,7 +365,7 @@ get_rna_expanded_metrics.combined.quality.metrics.output <- function(qmo_obj){
 
 #' Helper function to parse key-value lines in MetricsOutput.tsv
 #'
-#' @param record_string
+#' @param record_string the record content as string
 #'
 #' @return char vector
 parse_qmo_record <- function(record_string){
@@ -385,7 +385,7 @@ parse_qmo_record <- function(record_string){
 
 #' Helper function to parse tabular data in MetricsOutput.tsv
 #'
-#' @param table_string
+#' @param table_string the table as string
 #'
 #' @return data.frame
 parse_qmo_table <- function(table_string){
@@ -407,7 +407,7 @@ parse_qmo_table <- function(table_string){
 
 #' Helper function to handle empty rows in MetricsOutput.tsv tabular data
 #'
-#' @param intermediate_tbl
+#' @param intermediate_tbl intermediate table string
 #'
 #' @return data.frame
 handle_empty_qmo_table_values <- function(intermediate_tbl){
@@ -422,7 +422,7 @@ handle_empty_qmo_table_values <- function(intermediate_tbl){
 
 #' Helper function to remove header and footer from MetricsOutput.tsv
 #'
-#' @param string
+#' @param string string with file content
 #'
 #' @return char vector
 trim_qmo_header_and_footer <- function(string){

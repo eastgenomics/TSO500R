@@ -8,7 +8,7 @@ and return a data frame of expanded rna qc metrics per timepoint}
 read_rna_expanded_metrics(qmo_list)
 }
 \arguments{
-\item{cvo_list}{a list of combined.quality.metrics.output objects}
+\item{qmo_list}{a list of combined.quality.metrics.output objects}
 }
 \value{
 A data frame of expanded rna qc metrics extracted from

@@ -21,7 +21,7 @@ write_multiqc_data(
 
 \item{tmb_msi_data_frame}{data frame with tmb and msi statistics (get_metrics_df)}
 
-\item{file_path}{path to output file}
+\item{folder_path}{path to output folder}
 }
 \value{
 the files needed for generating a MultiQC report

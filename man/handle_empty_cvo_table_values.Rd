@@ -8,7 +8,7 @@ in CombinedVariantOutput.tsv tabular data}
 handle_empty_cvo_table_values(intermediate_tbl)
 }
 \arguments{
-\item{intermediate_tbl}{}
+\item{intermediate_tbl}{intermediate table string}
 }
 \value{
 data.frame

@@ -7,7 +7,7 @@
 trim_cvo_header_and_footer(string)
 }
 \arguments{
-\item{string}{}
+\item{string}{string with file content}
 }
 \value{
 char vector
