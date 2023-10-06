@@ -222,7 +222,7 @@ parse_cvo_record <- function(record_string){
     unlist() %>%
     stringr::str_remove("\\t$") %>%
     stringr::str_split("\\t") %>%
-    replace(., .=="NA", NA) # replace all string NAs with NA to avoid warnings from as.numeric
+    rapply(., function(x) ifelse(x=="NA",NA,x), how = "replace") # replace all string NAs with NA to avoid warnings from as.numeric
 
   if(stringr::str_detect(record_string, "TMB|MSI")){
     record <- purrr::map(intermediate, ~ as.numeric(.x[2]))
