@@ -60,7 +60,7 @@ read_cnv_data <- function(cnv_directory, local_app=FALSE){
 summarize_cnv_data <- function(cnv_directory){
   cnv_files <- list.files(
     path = cnv_directory,
-    pattern = "*CopyNumberVariants.vcf",
+    pattern = "*cnv.vcf|*CopyNumberVariants.vcf",
     full.names = TRUE
   )
 
