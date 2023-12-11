@@ -41,7 +41,7 @@ new_cnv_output <- function(cnv_file_path, local_app=FALSE) {
 read_cnv_data <- function(cnv_directory, local_app=FALSE){
   cnv_files <- list.files(
     path = cnv_directory,
-    pattern = "*CopyNumberVariants.vcf",
+    pattern = "*cnv.vcf|*CopyNumberVariants.vcf",
     full.names = TRUE
   )
   cnv_data <- map(cnv_files, cnv, local_app)  %>%
