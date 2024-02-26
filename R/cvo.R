@@ -1,0 +1,284 @@
+#' Read in a CombinedVariantOutput.tsv file and store as an object
+#'
+#' @description Read in a CombinedVariantOutput.tsv file
+#'
+#' @param cvo_file_path a file path to a CombinedVariantOutput.tsv file
+#' @param local_app specifies whether quality metrics are coming from local app
+#'
+#' @return A combined.variant.output object
+#' @export
+#'
+cvo <- function(cvo_file_path, local_app=FALSE){
+  new_combined_variant_output(cvo_file_path, local_app)
+}
+
+#' Constructor function for combined.variant.output objects
+#' Not to be called directly
+#'
+#' @param cvo_file_path a file path to a CombinedVariantOutput.tsv file
+#' @param local_app specifies whether quality metrics are coming from local app
+#'
+#' @return A combined.variant.output object
+new_combined_variant_output <- function(cvo_file_path, local_app=FALSE) {
+
+  ANALYSIS_DETAILS_STRING <- 'Analysis Details'
+  GENE_AMP_STRING <- 'Gene Amplifications'
+  PERCENT_MSI_STRING <- 'Percent Unstable MSI Sites'
+
+  cvo_file <- readr::read_file(cvo_file_path)
+  split_cvo_string <- stringr::str_split(string = cvo_file, pattern = "\\[") %>% unlist()
+
+  # parse analysis details, sequencing run details, TMB, and MSI part of provided CombinedVariantOutput file
+  start_info <- which(grepl(ANALYSIS_DETAILS_STRING,split_cvo_string))
+  end_info <- which(grepl(PERCENT_MSI_STRING, split_cvo_string))
+
+  # handle the parts of the file that are structured as key-value pairs
+  # i.e. metadata and TMB/MSI sections
+  records <- purrr::map(split_cvo_string[start_info:end_info], parse_cvo_record)
+  names(records) <- c("analysis_details", "sequencing_run_details", "tmb", "msi")
+
+  # handle the parts of the file that are structured as tabular data
+  # i.e. gene amplifications, splice variants, fusions, and small variants
+  start_data <- pmatch(GENE_AMP_STRING,split_cvo_string)
+  end_data <- length(split_cvo_string)
+
+  tables <- purrr::map(split_cvo_string[start_data:end_data], parse_cvo_table)
+
+  # the number of tables is different between local app and DRAGEN analysis pipeline
+  if (local_app) {
+    names(tables) <- c("gene_amplifications", "splice_variants", "fusions", "small_variants")
+  }
+  else {
+    names(tables) <- c("gene_amplifications", "splice_variants", "fusions", "exon_level_cnvs", "small_variants")
+  }
+
+  return(structure(c(records, tables), class = "combined.variant.output"))
+}
+
+#' Validator function for combined.variant.output constructor
+#' Not to be called directly
+#' NOT IMPLEMENTED
+#'
+#' @return boolean
+validate_tso500 <- function() {}
+
+#' Read in a batch of CombinedVariantOutput.tsv files into a list
+#'
+#' @param cvo_directory a file path to a directory containing one of more CombinedVariantOutput.tsv files
+#' @param local_app specifies whether quality metrics are coming from local app
+#'
+#' @return A named list of combined.variant.output objects
+#'
+#' @export
+read_cvo_data <- function(cvo_directory, local_app=FALSE){
+  cvo_files <- list.files(
+    path = cvo_directory,
+    pattern = "*CombinedVariantOutput.tsv",
+    full.names = TRUE
+  )
+  cvo_data <- map(cvo_files, cvo, local_app)
+  names(cvo_data) <- map(cvo_data, ~ .x$analysis_details$pair_id)
+  cvo_data
+}
+
+#' Extract small variants from combined.variant.output object and
+#' return in data frame format
+#'
+#' @param cvo_obj cvo_obj
+#'
+#' @return A data frame of small variants
+#'
+#' @export
+get_small_variants <- function(cvo_obj, ...){
+  UseMethod("get_small_variants", cvo_obj)
+}
+
+#' Extract gene amplifications from combined.variant.output object and
+#' return in data frame format
+#'
+#' @param cvo_obj cvo_obj
+#'
+#' @return A data frame of gene amplifications
+#'
+#' @export
+get_gene_amplifications <- function(cvo_obj, ...){
+  UseMethod("get_gene_amplifications", cvo_obj)
+}
+
+#' Extract splice variants from combined.variant.output object and
+#' return in data frame format
+#'
+#' @param cvo_obj cvo_obj
+#'
+#' @return A data frame of splice variants
+#'
+#' @export
+get_splice_variants <- function(cvo_obj, ...){
+  UseMethod("get_splice_variants", cvo_obj)
+}
+
+#' Extract fusions from combined.variant.output object and
+#' return in data frame format
+#'
+#' @param cvo_obj cvo_obj
+#'
+#' @return A data frame of fusions
+#'
+#' @export
+get_fusions <- function(cvo_obj, ...){
+  UseMethod("get_fusions", cvo_obj)
+}
+
+#' Get small variants from combined.variant.output object
+#'
+#' @param cvo_obj cvo_obj
+#' @return A data frame
+#' @method get_small_variants combined.variant.output
+#'
+#' @export
+get_small_variants.combined.variant.output <- function(cvo_obj){
+  suppressWarnings(
+    if(all(is.na(cvo_obj$small_variants))){
+      small_variant_df <- data.frame()
+    } else {
+      small_variant_df <- cvo_obj$small_variants %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+  }
+  )
+  return(small_variant_df)
+}
+
+#' Get gene amplifications from combined.variant.output object
+#'
+#' @param cvo_obj cvo_obj
+#' @return A data frame
+#' @method get_gene_amplifications combined.variant.output
+#'
+#' @export
+get_gene_amplifications.combined.variant.output <- function(cvo_obj){
+  suppressWarnings(
+    if(all(is.na(cvo_obj$gene_amplifications))){
+      gene_amplification_df <- data.frame()
+    } else {
+      gene_amplification_df <- cvo_obj$gene_amplifications %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+  }
+  )
+  return(gene_amplification_df)
+}
+
+#' Get splice variants from combined.variant.output object
+#'
+#' @param cvo_obj cvo_obj
+#' @return A data frame
+#' @method get_splice_variants combined.variant.output
+#'
+#' @export
+get_splice_variants.combined.variant.output <- function(cvo_obj){
+  suppressWarnings(
+    if(all(is.na(cvo_obj$splice_variants))){
+      splice_variant_df <- data.frame()
+    } else {
+      splice_variant_df <- cvo_obj$splice_variants %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+  }
+  )
+  return(splice_variant_df)
+}
+
+#' Get fusions from combined.variant.output object
+#'
+#' @param cvo_obj cvo_obj
+#' @return A data frame
+#' @method get_fusions combined.variant.output
+#'
+#' @export
+get_fusions.combined.variant.output <- function(cvo_obj){
+  suppressWarnings(
+    if(all(is.na(cvo_obj$fusions))){
+      fusion_df <- data.frame()
+    } else {
+      fusion_df <- cvo_obj$fusions %>%
+        dplyr::mutate(sample_id = cvo_obj$analysis_details$pair_id) %>%
+        dplyr::select(sample_id, tidyr::everything())
+  }
+  )
+  return(fusion_df)
+}
+
+#' Helper function to parse key-value lines in CombinedVariantOutput.tsv
+#'
+#' @param record_string the record content as string
+#'
+#' @return char vector
+parse_cvo_record <- function(record_string){
+
+  intermediate <- record_string %>%
+    trim_cvo_header_and_footer() %>%
+    stringr::str_split("\n") %>%
+    unlist() %>%
+    stringr::str_remove("\\t$") %>%
+    stringr::str_split("\\t") %>%
+    rapply(., function(x) ifelse(x=="NA",NA,x), how = "replace") # replace all string NAs with NA to avoid warnings from as.numeric
+
+  if(stringr::str_detect(record_string, "TMB|MSI")){
+    record <- purrr::map(intermediate, ~ as.numeric(.x[2]))
+  } else {
+    record <- purrr::map(intermediate, ~ .x[2])
+  }
+
+  record_names <- purrr::map_chr(intermediate, ~ .x[1])
+  names(record) <- janitor::make_clean_names(record_names)
+  return(record)
+}
+
+#' Helper function to parse tabular data in CombinedVariantOutput.tsv
+#'
+#' @param table_string the table as string
+#'
+#' @return data.frame
+parse_cvo_table <- function(table_string){
+
+  intermediate <- table_string %>% trim_cvo_header_and_footer()
+  header_line <- stringr::str_extract(intermediate, ".+\n")
+
+  if(stringr::str_detect(header_line, "\\t\\n")){
+    intermediate <- stringr::str_replace_all(
+      string = intermediate,
+      pattern = "\\t\\n",
+      replacement = "\n")
+  }
+
+  table_data <- intermediate %>% handle_empty_cvo_table_values()
+  return(table_data)
+}
+
+#' Helper function to handle empty rows
+#' in CombinedVariantOutput.tsv tabular data
+#'
+#' @param intermediate_tbl intermediate table string
+#'
+#' @return data.frame
+handle_empty_cvo_table_values <- function(intermediate_tbl){
+  if(stringr::str_detect(string = intermediate_tbl, pattern = "\\nNA$")){
+    return(NA)
+  } else {
+    to_clean <- utils::read.table(text = intermediate_tbl, sep = "\t", header = TRUE, fill = TRUE)
+    clean_name_df <- janitor::clean_names(to_clean)
+    return(clean_name_df)
+  }
+}
+
+#' Helper function to remove header and footer from CombinedVariantOutput.tsv
+#'
+#' @param string string with file content
+#'
+#' @return char vector
+trim_cvo_header_and_footer <- function(string){
+  string %>%
+    stringr::str_remove(".+\\t\\t\\n") %>%
+    stringr::str_remove("[\\n\\t]+$")
+}
