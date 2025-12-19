@@ -1,0 +1,44 @@
+---
+title: "final"
+author: "Sophie Paul"
+date: "21/02/2022"
+output: html_document
+---
+
+
+```{r}
+library(tso500R)
+library(tidyverse)
+
+cvo_data_dir <- "test_data/cvo_files/211110_A01295_0033_AHLHC5DRXY_TSO500/"
+annotation_data_filepath <- "test_data/TSO_Reference.xlsx"
+flowcell_barcode <- str_extract(cvo_data_dir, "_\\w{10}_") %>% str_remove_all("_")
+
+annotations <- read_annotation_data(annotation_data_filepath)
+cvo_data <- read_cvo_data(cvo_data_dir)
+
+small_variant_df <- read_small_variants(cvo_data) %>%
+  process_small_variant_data() %>%
+  add_annotation_data(annotations)
+
+plot_af_per_variant_consequence(small_variant_df) %>% add_common_theme_elements()
+plot_af_density(small_variant_df) %>% add_common_theme_elements()
+plot_af_histogram(small_variant_df) %>% add_common_theme_elements()
+
+metrics_df <- get_metrics_df(cvo_data)
+tmb_metric_names <- c("total_tmb", "coding_region_size_in_megabases", "number_of_passing_eligible_variants")
+msi_metric_names <- c("usable_msi_sites", "total_msi_sites_unstable", "percent_unstable_msi_sites")
+
+data_to_write <- list(metrics_df %>% select(sample_id, all_of(msi_metric_names)), # MSI data
+                      metrics_df %>% select(sample_id, all_of(tmb_metric_names)), # TMB data
+                      small_variant_df)
+
+names(data_to_write) <- paste0(flowcell_barcode, c("_MSI", "_TMB", "_Nonsyn"))
+
+write_workbook("test", data_frames = data_to_write, sheet_names = names(data_to_write))
+```
+
+```{r}
+library(rpivotTable)
+rpivotTable(small_variant_df, rows="sample_id", cols=c("consequence_s"), width="100%", height="100%")
+```

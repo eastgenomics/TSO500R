@@ -1,0 +1,54 @@
+Package: tso500R
+Type: Package
+Title: Handle Illumina TruSight Oncology 500 Data
+Version: 0.2.0
+Authors@R: 
+    c(person("Christopher", "Mohr", 
+             email = "christopher.mohr@boehringer-ingelheim.de", 
+             role = c("aut", "cre")),
+      person("Alexander", "Peltzer", 
+             email = "alexander.peltzer@boehringer-ingelheim.com", 
+             role = "ctb"),
+      person("Sophie", "Paul", 
+             email = "sophie.paul@addenbrookes.nhs.uk", 
+             role = "aut"))
+Description: TSO500R(eader) provides tools for importing, processing, and 
+    analyzing data from Illumina TruSight Oncology 500 (TSO500) assays. 
+    Supports data from the TSO500 DRAGEN analysis pipeline, DRAGEN ctDNA 
+    analysis pipeline, and LocalApp. Functions include parsing quality control 
+    files ('MetricsOutput.tsv'), processing variant analysis outputs 
+    ('CombinedVariantOutput.tsv'), integrating different result types, 
+    generating visualizations, and exporting data for downstream analysis.
+License: MIT + file LICENSE
+URL: https://github.com/Boehringer-Ingelheim/TSO500R,
+    https://boehringer-ingelheim.github.io/TSO500R/
+BugReports: https://github.com/Boehringer-Ingelheim/TSO500R/issues
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.0.0)
+Imports:
+    ComplexHeatmap,
+    dplyr (>= 1.0.0),
+    ggplot2 (>= 3.3.0),
+    gt,
+    janitor,
+    jsonlite,
+    openxlsx,
+    purrr (>= 0.3.0),
+    readr,
+    readxl,
+    rlang,
+    stringr,
+    tibble,
+    tidyr (>= 1.1.0),
+    vcfR
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    covr
+VignetteBuilder: knitr
+Config/testthat/edition: 3
